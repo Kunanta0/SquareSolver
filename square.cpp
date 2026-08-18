@@ -9,7 +9,7 @@ void answers(int,int,int);
 int main(void)
 {
     setlocale(LC_ALL, "Russian");
-    printf("Квадратное уравнение имеет вид ax^2+bx+c=0\n");
+    printf("Квадратное уравнение имеет вид ax^2+bx+c=0, a!=0\n");
     int a, b, c;
     a = asknum('a');
     b = asknum('b');
@@ -24,10 +24,10 @@ int asknum(char l)
     int n;
     printf("Введите коэффициент %c: ",l);
     char ch;
-    while (scanf("%d", &n)!=1)
+    while (scanf("%d", &n)!=1 || (l=='a' && n==0))
     {
         while ((ch=getchar())!='\n') continue;
-        printf("Неправильный ввод, введите целое число:");
+        printf("Неправильный ввод, введите целое число: ");
     }
     return n;
 }
