@@ -3,48 +3,32 @@
 
 #include "maths.h"
 
-void answer(double, double);
-void answers(double, double, double);
-void printans(double, double, double, double);
+void printans(struct ans);
 int menu();
-//выводит единственное решение
-void answer(double a, double b)
-{
-    double ans = -b / 2 / a;
-    printf("1 решение: %.2lg\n", ans);
-}
-
-//выводит два решения
-void answers(double a, double b, double D)
-{
-    double ans1 = (-b + sqrt(D)) / 2 / a;
-    double ans2 = (-b - sqrt(D)) / 2 / a;
-    printf("2 решения: %.2lg, %.2lg\n", ans1, ans2);
-}
 
 //выводит ответ
-void printans(double a, double b, double c, double D)
+void printans(struct ans otvet)
 {
-    if (!isnull(a, 0))
+    switch (otvet.id)
     {
-        if (D < 0) printf("Корней нет\n");
-        else if (isnull(D, 0)) answer(a, b);
-        else answers(a, b, D);
-    }
-    else
-    {
-        if (isnull(b, 0))
-        {
-            if (isnull(c, 0))
-            {
-                printf("Бесконечное количество корней\n");
-            }
-            else printf("Нет корней\n");
-        }
-        else
-        {
-            printf("Линейное уравнение, корень: %.2lg\n", -c / b);
-        }
+    case 0:
+        printf("Квадратное уравнение не имеет действительных корней\n");
+        break;
+    case 1:
+        printf("1 решение: %lg\n", otvet.x1);
+        break;
+    case 2:
+        printf("2 решения: %lg и %lg\n", otvet.x1, otvet.x2);
+        break;
+    case 3:
+        printf("Линейное уравнение, корень: %lg\n", otvet.x1);
+        break;
+    case 4:
+        printf("Бесконечное количество корней\n");
+        break;
+    case 5:
+        printf("Корней нет, противоречие\n");
+        break;
     }
 }
 
@@ -72,6 +56,5 @@ int menu()
 
     return n;
 }
-
 
 #endif // OUTPUT_H_INCLUDED
