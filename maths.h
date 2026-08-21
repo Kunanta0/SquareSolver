@@ -69,7 +69,7 @@ bool test_kvad1(struct coeffs EQ, double x)
 //проверяет случай 3
 bool test_kvad3(struct coeffs EQ, double x)
 {
-    if (isnull(-EQ.c / EQ.b, x)) return true;
+    if (isnull(-EQ.c / EQ.b, x) && isnull(EQ.a, 0)) return true;
     return false;
 }
 //проверяет случай 4
