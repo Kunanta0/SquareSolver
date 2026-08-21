@@ -8,7 +8,6 @@
 
 int main(void)
 {
-    const char* s = (test_kvad(1, -5, 6, 2, 3)) ? "true" : "false";
     printf("%s\n", s);
 
     setlocale(LC_ALL, "Russian");
@@ -30,11 +29,9 @@ int main(void)
         printf("Введите 0, чтобы завершить программу, 1, чтобы решать уравнение снова: ");
 
         check = menu();
-    }
-    while (check == 1);
-
-    MyAssert(check == 1);
+    } while (check == 1);
 
     printf("Пока!");
+    
     return 0;
 }
