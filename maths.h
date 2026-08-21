@@ -1,123 +1,60 @@
-#ifndef MATHS_H_INCLUDED
-#define MATHS_H_INCLUDED
+#ifndef OUTPUT_H_INCLUDED
+#define OUTPUT_H_INCLUDED
 
-#define OK(str, x) isnull(x, (-str.b + sqrt(D)) / 2 / str.a) || isnull(x, (-str.b - sqrt(D)) / 2 / str.a)
-#define ZERO 0
+#include "maths.h"
 
-const double epsilon = 0.000000001;
+void printans(struct ans);
+int menu();
 
-//структура ответа
-struct ans
+//выводит ответ
+void printans(struct ans otvet)
 {
-    int id = ZERO;
-    double x1 = ZERO;
-    double x2 = ZERO;
-};
-
-//структура коэффициентов
-struct coeffs
-{
-    double a = ZERO;
-    double b = ZERO;
-    double c = ZERO;
-};
-
-struct ans answer(struct coeffs EQ, int);
-int num_sol(double, double, double);
-double Discriminant(struct coeffs EQ);
-bool isnull(double, double);
-bool test_kvad1(struct coeffs, double);
-bool test_kvad2(struct coeffs);
-bool test_kvad3(struct coeffs);
-double line(double, double);
-
-//считает дискриминант
-double Discriminant(struct coeffs EQ)
-{
-    return EQ.b * EQ.b - 4 * EQ.a * EQ.c;
-}
-
-//обрабатывает погрешность нулевого ввода
-bool isnull(double a, double b)
-{
-    return (abs(a - b) < epsilon) ? true : false;
-}
-
-//проверяет, является ли введенные значения корнями квадратного уравнения с заданными коэффициентами
-bool test_kvad2(struct coeffs EQ, double x1, double x2)
-{
-    double D = Discriminant(EQ);
-    if (OK(EQ, x1) && OK(EQ, x2) && !(isnull(x1, x2))) return true;
-    else return false;
-}
-
-//проверяет, действительно ли уравнение имеет одно решение и верно ли оно
-bool test_kvad1(struct coeffs EQ, double x)
-{
-    double D = Discriminant(EQ);
-    if (isnull(D, 0) && OK(EQ, x)) return true;
-    return false;
-}
-
-bool test_kvad3(struct coeffs EQ, double x)
-{
-    if (isnull(-EQ.c / EQ.b, x)) return true;
-    return false;
-}
-
-//выводит уникальный номер, показывающий, какой случай реализуется
-int num_sol(struct coeffs EQ)
-{
-    double D = Discriminant(EQ);
-    if (!isnull(EQ.a, 0))
+    switch (otvet.id)
     {
-        if (D < 0) return 0;
-        else if (isnull(D, 0)) return 1;
-        else return 2;
+    case 0:
+        printf("Квадратное уравнение не имеет действительных корней\n");
+        break;
+    case 1:
+        printf("1 решение: %lg\n", otvet.x1);
+        break;
+    case 2:
+        printf("2 решения: %lg и %lg\n", otvet.x1, otvet.x2);
+        break;
+    case 3:
+        printf("Линейное уравнение, корень: %lg\n", otvet.x1);
+        break;
+    case 4:
+        printf("Бесконечное количество корней\n");
+        break;
+    case 5:
+        printf("Корней нет, противоречие\n");
+        break;
     }
-    else
+}
+
+//меню, которое запрашивает у пользователя запуск программы снова
+int menu()
+{
+    char ch = '\0';
+    bool notok = true;
+    int n = 0;
+
+    while(notok)
     {
-        if (isnull(EQ.b, 0))
+        int cor = scanf("%d", &n);
+        if (cor != 1 || (ch = getchar()) != '\n')
         {
-            if (isnull(EQ.c, 0))
-            {
-                return 4;
-            }
-            else return 5;
+            while ((ch = getchar()) != '\n') continue;
+            printf("Неправильный ввод, введите 0 либо 1: ");
         }
         else
         {
-            return 3;
+            if (n != 1 && n != 0) printf("Неправильный ввод, введите 0 либо 1: ");
+            else notok = false;
         }
     }
+
+    return n;
 }
 
-//функция, которая возвращает структуру, которая выдает ответ
-struct ans answer(struct coeffs EQ, int id)
-{
-    double D = Discriminant(EQ);
-    struct ans otvet =
-    {
-        id,
-        ZERO,
-        ZERO
-    };
-    switch (id)
-    {
-        case 1:
-            otvet.x1 = -EQ.b / 2 / EQ.a;
-            break;
-        case 2:
-            otvet.x1 = (-EQ.b + sqrt(D)) / 2 / EQ.a;
-            otvet.x2 = (-EQ.b - sqrt(D)) / 2 / EQ.a;
-            break;
-        case 3:
-            otvet.x1 = -EQ.c / EQ.b;
-            break;
-        default:
-            break;
-    }
-    return otvet;
-}
-
-#endif // MATHS_H_INCLUDED
+#endif // OUTPUT_H_INCLUDED
