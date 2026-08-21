@@ -24,14 +24,19 @@ int main(void)
         printf("Квадратное уравнение имеет вид ax^2 + bx + c = 0\n");
 
         double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
-        a = asknum('a');
-        b = asknum('b');
-        c = asknum('c');
 
-        int id = num_sol(a, b, c);
+        struct coeffs EQ =
+        {
+            asknum('a'),
+            asknum('b'),
+            asknum('c'),
+        };
 
-        struct ans otvet = answer(a, b, c, id);
+        int id = num_sol(EQ);
 
+        struct ans otvet = answer(EQ, id);
+
+        MyAssert(test_kvad2(EQ, otvet.x1, otvet.x2));
         printans(otvet);
 
         printf("Введите 0, чтобы завершить программу, 1, чтобы решать уравнение снова: ");
