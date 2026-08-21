@@ -5,6 +5,7 @@
 #include "input.h"
 #include "output.h"
 #include "myassert.h"
+#include "testik.h"
 
 //0 - нет решения квадратного уравнения
 //1 - 1 решение квадратного уравнения
@@ -23,7 +24,6 @@ int main(void)
     {
         printf("Квадратное уравнение имеет вид ax^2 + bx + c = 0\n");
 
-        double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
         struct coeffs EQ =
         {
             asknum('a'),
@@ -33,20 +33,8 @@ int main(void)
         int id = num_sol(EQ);
         struct ans otvet = answer(EQ, id);
 
-        switch (otvet.id)
-        {
-            case 1:
-                if (test_kvad1(EQ, otvet.x1)) break;
-                else return 1;
-            case 2:
-                if (test_kvad2(EQ, otvet.x1, otvet.x2)) break;
-                else return 1;
-            case 3:
-                if (test_kvad3(EQ, otvet.x1)) break;
-                else return 1;
-            default:
-                break;
-        }
+        if (!test(EQ, otvet)) return 1;
+
         printans(otvet);
 
         printf("Введите 0, чтобы завершить программу, 1, чтобы решать уравнение снова: ");
