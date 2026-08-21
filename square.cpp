@@ -36,7 +36,20 @@ int main(void)
 
         struct ans otvet = answer(EQ, id);
 
-        MyAssert(test_kvad2(EQ, otvet.x1, otvet.x2));
+        switch (otvet.id)
+        {
+            case 1:
+                test_kvad1(EQ, otvet.x1);
+                break;
+            case 2:
+                test_kvad2(EQ, otvet.x1, otvet.x2);
+                break;
+            case 3:
+                test_kvad3(EQ, otvet.x1);
+                break;
+            default:
+                break;
+        }
         printans(otvet);
 
         printf("Введите 0, чтобы завершить программу, 1, чтобы решать уравнение снова: ");
