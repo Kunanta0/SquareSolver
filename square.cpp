@@ -16,7 +16,7 @@ int main(void)
     {
         printf("Квадратное уравнение имеет вид ax^2 + bx + c = 0\n");
 
-        double a, b, c = 0;
+        double a = 0, b = 0, c = 0;
         a = asknum('a');
         b = asknum('b');
         c = asknum('c');
