@@ -6,10 +6,15 @@
 #include "output.h"
 #include "myassert.h"
 
+//0 - нет решения квадратного уравнения
+//1 - 1 решение квадратного уравнения
+//2 - 2 решения квадратного уравнения
+//3 - 1 решение, линейное уравнение
+//4 - бесконечное количество решений
+//5 - нет решений, противоречие
+
 int main(void)
 {
-    printf("%s\n", s);
-
     setlocale(LC_ALL, "Russian");
 
     int check = 0;
@@ -18,13 +23,16 @@ int main(void)
     {
         printf("Квадратное уравнение имеет вид ax^2 + bx + c = 0\n");
 
-        double a, b, c = 0;
+        double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
         a = asknum('a');
         b = asknum('b');
         c = asknum('c');
-        double D = Discriminant(a, b, c);
 
-        printans(a, b, c, D);
+        int id = num_sol(a, b, c);
+
+        struct ans otvet = answer(a, b, c, id);
+
+        printans(otvet);
 
         printf("Введите 0, чтобы завершить программу, 1, чтобы решать уравнение снова: ");
 
@@ -32,6 +40,5 @@ int main(void)
     } while (check == 1);
 
     printf("Пока!");
-    
     return 0;
 }
