@@ -14,9 +14,35 @@
 //4 - бесконечное количество решений
 //5 - нет решений, противоречие
 
+
 int main(void)
 {
     setlocale(LC_ALL, "Russian");
+
+    struct coeffs cf[6] =
+    {
+        {1, 5, 6},
+        {1, -2, 1},
+        {0, 0, 0},
+        {0, 0, 4},
+        {0, 6, 36},
+        {100, 1, 100},
+    } ;
+
+    struct ans otvety[6] =
+    {
+        {2, -2, -3},
+        {1, 1, ZERO},
+        {4, ZERO, ZERO},
+        {5, ZERO, ZERO},
+        {3, -6, ZERO},
+        {0, ZERO, ZERO},
+    };
+
+    for (int i = 0;i < 6;++i)
+    {
+        if (test(cf[i], otvety[i]) == 0) return 1;
+    }
 
     int check = 0;
 
@@ -32,9 +58,6 @@ int main(void)
         };
         int id = num_sol(EQ);
         struct ans otvet = answer(EQ, id);
-
-        if (!test(EQ, otvet)) return 1;
-
         printans(otvet);
 
         printf("Введите 0, чтобы завершить программу, 1, чтобы решать уравнение снова: ");
