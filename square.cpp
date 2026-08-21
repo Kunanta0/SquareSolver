@@ -24,29 +24,26 @@ int main(void)
         printf("Квадратное уравнение имеет вид ax^2 + bx + c = 0\n");
 
         double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
-
         struct coeffs EQ =
         {
             asknum('a'),
             asknum('b'),
             asknum('c'),
         };
-
         int id = num_sol(EQ);
-
         struct ans otvet = answer(EQ, id);
 
         switch (otvet.id)
         {
             case 1:
-                test_kvad1(EQ, otvet.x1);
-                break;
+                if (test_kvad1(EQ, otvet.x1)) break;
+                else return 1;
             case 2:
-                test_kvad2(EQ, otvet.x1, otvet.x2);
-                break;
+                if (test_kvad2(EQ, otvet.x1, otvet.x2)) break;
+                else return 1;
             case 3:
-                test_kvad3(EQ, otvet.x1);
-                break;
+                if (test_kvad3(EQ, otvet.x1)) break;
+                else return 1;
             default:
                 break;
         }
