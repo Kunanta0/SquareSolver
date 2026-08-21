@@ -25,7 +25,7 @@ bool isnull(double a, double b)
 bool test_kvad(double a, double b, double c, double x1, double x2)
 {
     double D = Discriminant(a, b, c);
-    if (OK(x1) && OK(x2)) return true;
+    if (OK(x1) && OK(x2) && !(isnull(x1, x2))) return true;
     else return false;
 }
 
