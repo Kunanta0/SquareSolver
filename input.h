@@ -24,4 +24,5 @@ double asknum(char coeff)
     return n;
 }
 
+
 #endif // INPUT_H_INCLUDED
