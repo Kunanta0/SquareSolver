@@ -2,6 +2,7 @@
 #define INPUT_H_INCLUDED
 
 double asknum(char);
+
 //запрашивает коэффициенты квадратного уравнения
 double asknum(char coeff)
 {
