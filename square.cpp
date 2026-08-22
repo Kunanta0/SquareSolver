@@ -19,29 +19,27 @@ int main(void)
 {
     setlocale(LC_ALL, "Russian");
 
-    test();
-
-    int check = 0;
-
-    do
+    while (true)
     {
-        printf("Квадратное уравнение имеет вид ax^2 + bx + c = 0\n");
-
-        struct coeffs EQ =
+        printf("Введите 0, чтобы завершить программу, 1, чтобы решать уравнение, 2, чтобы запустить тесты: ");
+        int check = menu();
+        if (check == 0) break;
+        if (check == 1)
         {
-            asknum('a'),
-            asknum('b'),
-            asknum('c'),
-        };
-        int id = num_sol(EQ);
-        struct ans otvet = answer(EQ, id);
-        printans(otvet);
+            printf("Квадратное уравнение имеет вид ax^2 + bx + c = 0\n");
 
-        printf("Введите 0, чтобы завершить программу, 1, чтобы решать уравнение снова: ");
-
-        check = menu();
-    } while (check == 1);
-
+            struct coeffs EQ =
+            {
+                asknum('a'),
+                asknum('b'),
+                asknum('c'),
+            };
+            int id = num_sol(EQ);
+            struct ans otvet = answer(EQ, id);
+            printans(otvet);
+        }
+        if (check == 2) test();
+    }
     printf("Пока!");
     return 0;
 }
