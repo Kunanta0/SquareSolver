@@ -34,11 +34,12 @@ void test()
         if (otvety[i].id != 2)
         {
             if ((otvety[i].id == otvetik.id) && (otvety[i].x1 == otvetik.x1) && (otvety[i].x2 == otvetik.x2)) printf("Тест %d пройден\n", i + 1);
+            else printf("Тест %d не пройден\n", i + 1);
         }
         if (otvety[i].id == 2)
         {
             if (OK(cf[i], otvety[i].x1) && OK(cf[i], otvety[i].x2) && !(isnull(otvety[i].x1, otvety[i].x2))) printf("Тест %d пройден\n", i + 1);
-            else printf("Тест %d не пройден ");
+            else printf("Тест %d не пройден\n", i + 1);
         }
     }
 }
