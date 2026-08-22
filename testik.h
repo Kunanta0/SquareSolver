@@ -1,15 +1,15 @@
 #ifndef TESTIK_H_INCLUDED
 #define TESTIK_H_INCLUDED
 
-void test();
+void test(int argc, char* argv[]);
 
 //функция тестировщика
-void test()
+void test(int argc, char* argv[])
 {
     int num_cols = 0;
 
     FILE* fp = NULL;
-    MyAssert((fp = fopen("test.txt", "r")) != NULL);
+    MyAssert((fp = fopen(argv[1], "r")) != NULL);
 
     char ch = '0';
 
@@ -34,13 +34,13 @@ void test()
         struct ans otvetik = answer(cf[i], id0);
         if (otvety[i].id != 2)
         {
-            if ((otvety[i].id == otvetik.id) && (isnull(otvety[i].x1, otvetik.x1)) && (isnull(otvety[i].x2, otvetik.x2))) printf("Тест %d пройден\n", i + 1);
-            else printf("Тест %d не пройден\n", i + 1);
+            if ((otvety[i].id == otvetik.id) && (isnull(otvety[i].x1, otvetik.x1)) && (isnull(otvety[i].x2, otvetik.x2))) printf(GREEN "Тест %d пройден\n" RESET, i + 1);
+            else printf(RED "Тест %d не пройден\n" RESET, i + 1);
         }
         if (otvety[i].id == 2)
         {
-            if (OK(cf[i], otvety[i].x1) && OK(cf[i], otvety[i].x2) && !(isnull(otvety[i].x1, otvety[i].x2))) printf("Тест %d пройден\n", i + 1);
-            else printf("Тест %d не пройден\n", i + 1);
+            if (OK(cf[i], otvety[i].x1) && OK(cf[i], otvety[i].x2) && !(isnull(otvety[i].x1, otvety[i].x2))) printf(GREEN "Тест %d пройден\n" RESET, i + 1);
+            else printf(RED "Тест %d не пройден\n" RESET, i + 1);
         }
     }
     free(cf);
