@@ -27,12 +27,6 @@ struct ans answer(struct coeffs, int);
 int num_sol(struct coeffs);
 double Discriminant(struct coeffs);
 bool isnull(double, double);
-bool test_kvad0(struct coeffs);
-bool test_kvad1(struct coeffs, double);
-bool test_kvad2(struct coeffs, double, double);
-bool test_kvad3(struct coeffs, double);
-bool test_kvad4(struct coeffs);
-bool test_kvad5(struct coeffs);
 
 //считает дискриминант
 double Discriminant(struct coeffs EQ)
@@ -44,45 +38,6 @@ double Discriminant(struct coeffs EQ)
 bool isnull(double a, double b)
 {
     return (abs(a - b) < epsilon) ? true : false;
-}
-
-//проверяет случай 0
-bool test_kvad0(struct coeffs EQ)
-{
-    if (Discriminant(EQ) < 0) return true;
-    return false;
-}
-//проверяет случай 2
-bool test_kvad2(struct coeffs EQ, double x1, double x2)
-{
-    double D = Discriminant(EQ);
-    if (OK(EQ, x1) && OK(EQ, x2) && !(isnull(x1, x2))) return true;
-    return false;
-}
-//проверяет случай 1
-bool test_kvad1(struct coeffs EQ, double x)
-{
-    double D = Discriminant(EQ);
-    if (isnull(D, 0) && OK(EQ, x)) return true;
-    return false;
-}
-//проверяет случай 3
-bool test_kvad3(struct coeffs EQ, double x)
-{
-    if (isnull(-EQ.c / EQ.b, x) && isnull(EQ.a, 0)) return true;
-    return false;
-}
-//проверяет случай 4
-bool test_kvad4(struct coeffs EQ)
-{
-    if (isnull(EQ.a, 0) && isnull(EQ.b, 0) && isnull(EQ.c, 0)) return true;
-    return false;
-}
-//проверяет случай 5
-bool test_kvad5(struct coeffs EQ)
-{
-    if (isnull(EQ.a, 0) && isnull(EQ.b, 0) && !isnull(EQ.c, 0)) return true;
-    return false;
 }
 
 //выводит уникальный номер, показывающий, какой случай реализуется
