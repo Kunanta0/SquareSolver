@@ -3,7 +3,7 @@
 
 //свой assert()
 #define MyAssert(exp)\
-if (!exp)\
+if (!(exp))\
 {\
     fprintf(stderr, "Ошибка: %s в файле %s, в строке %d, в функции %s\n",#exp, __FILE__, __LINE__, __func__);\
     exit(1);\
