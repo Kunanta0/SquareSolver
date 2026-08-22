@@ -11,23 +11,23 @@ void printans(struct ans otvet)
 {
     switch (otvet.id)
     {
-    case 0:
-        printf("Квадратное уравнение не имеет действительных корней\n");
+    case SQUARE_0:
+        printf("Квадратное уравнение не имеет действительных корней\n\n");
         break;
-    case 1:
-        printf("1 решение: %lg\n", otvet.x1);
+    case SQUARE_1:
+        printf("1 решение: %lg\n\n", otvet.x1);
         break;
-    case 2:
-        printf("2 решения: %lg и %lg\n", otvet.x1, otvet.x2);
+    case SQUARE_2:
+        printf("2 решения: %lg и %lg\n\n", otvet.x1, otvet.x2);
         break;
-    case 3:
-        printf("Линейное уравнение, корень: %lg\n", otvet.x1);
+    case LINE:
+        printf("Линейное уравнение, корень: %lg\n\n", otvet.x1);
         break;
-    case 4:
-        printf("Бесконечное количество корней\n");
+    case ALWAYS_TRUE:
+        printf("Бесконечное количество корней\n\n");
         break;
-    case 5:
-        printf("Корней нет, противоречие\n");
+    case ALWAYS_FALSE:
+        printf("Корней нет, противоречие\n\n");
         break;
     }
 }
@@ -49,7 +49,7 @@ int menu()
         }
         else
         {
-            if (n != 1 && n != 0) printf("Неправильный ввод, введите 0 либо 1: ");
+            if (n != 0 && n != 1 && n != 2) printf("Неправильный ввод, введите 0 либо 1: ");
             else notok = false;
         }
     }
