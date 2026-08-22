@@ -11,8 +11,8 @@ void test()
 {
     int num_cols = 0;
 
-    FILE* fp;
-    fp = fopen("test.txt", "r");
+    FILE* fp = NULL;
+    MyAssert((fp = fopen("test.txt", "r")) != NULL);
 
     char ch = '\0';
 
