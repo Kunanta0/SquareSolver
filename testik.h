@@ -21,8 +21,8 @@ void test()
 
     rewind(fp);
 
-    struct coeffs cf[num_cols];
-    struct ans otvety[num_cols];
+    struct coeffs cf[num_cols] = {0};
+    struct ans otvety[num_cols] = {0};
     for (int i = 0;i < num_cols; ++i)
     {
         fscanning(fp, cf, otvety, i);
