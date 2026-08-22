@@ -21,12 +21,12 @@ int main(void)
 
     while (true)
     {
-        printf("Введите 0, чтобы завершить программу, 1, чтобы решать уравнение, 2, чтобы запустить тесты: ");
+        printf(YELLOW "Введите 0, чтобы завершить программу, 1, чтобы решать уравнение, 2, чтобы запустить тесты: ");
         int check = menu();
         if (check == 0) break;
-        if (check == 1)
+        else if (check == 1)
         {
-            printf("Квадратное уравнение имеет вид ax^2 + bx + c = 0\n");
+            printf(YELLOW "Квадратное уравнение имеет вид ax^2 + bx + c = 0\n");
 
             struct coeffs EQ =
             {
@@ -38,8 +38,8 @@ int main(void)
             struct ans otvet = answer(EQ, id);
             printans(otvet);
         }
-        if (check == 2) test();
+        else if (check == 2) test();
     }
-    printf("Пока!");
+    printf(YELLOW "Пока!" RESET);
     return 0;
 }
