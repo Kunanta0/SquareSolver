@@ -1,12 +1,9 @@
 #ifndef TESTIK_H_INCLUDED
 #define TESTIK_H_INCLUDED
 
-#define fscanning(file, StrCoeff, StrAns, index) fscanf(file, "%lg %lg %lg %d %lg %lg",\
-&(StrCoeff[index].a), &(StrCoeff[index].b), &(StrCoeff[index].c), &(StrAns[index].id), &(StrAns[index].x1), &(StrAns[index].x2))
-
 void test();
 
-//проверяет ответ
+//функция тестировщика
 void test()
 {
     int num_cols = 0;
@@ -14,21 +11,23 @@ void test()
     FILE* fp = NULL;
     MyAssert((fp = fopen("test.txt", "r")) != NULL);
 
-    char ch = '\0';
+    char ch = '0';
 
     while ((ch = getc(fp)) != EOF) if (ch == '\n') ++num_cols;
     num_cols += 1;
 
-    rewind(fp);
 
-    struct coeffs cf[num_cols] = {0};
-    struct ans otvety[num_cols] = {0};
+    fseek(fp, 0, SEEK_SET);
+
+    struct coeffs* cf = (struct coeffs*)calloc(num_cols, sizeof(struct coeffs));
+    struct ans* otvety = (struct ans*)calloc(num_cols, sizeof(struct ans));
+
     for (int i = 0;i < num_cols; ++i)
     {
-        fscanning(fp, cf, otvety, i);
+        fscanf(fp, "%lg %lg %lg %d %lg %lg",&(cf[i].a), &(cf[i].b), &(cf[i].c), &(otvety[i].id), &(otvety[i].x1), &(otvety[i].x2));
     }
 
-    for (int i = 0;i < sizeof(otvety) / sizeof(otvety[0]);++i)
+    for (int i = 0;i < num_cols;++i)
     {
         double D = Discriminant(cf[i]);
         int id0 = num_sol(cf[i]);
@@ -44,7 +43,10 @@ void test()
             else printf("Тест %d не пройден\n", i + 1);
         }
     }
+    free(cf);
+    free(otvety);
     MyAssert(fclose(fp) == 0);
+    printf("\n");
 }
 
 #endif // TESTIK_H_INCLUDED
