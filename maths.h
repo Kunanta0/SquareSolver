@@ -4,6 +4,16 @@
 #define OK(str, x) isnull(x, (-str.b + sqrt(D)) / 2 / str.a) || isnull(x, (-str.b - sqrt(D)) / 2 / str.a)
 #define ZERO 0
 
+enum
+{
+    SQUARE_0,
+    SQUARE_1,
+    SQUARE_2,
+    LINE,
+    ALWAYS_TRUE,
+    ALWAYS_FALSE
+};
+
 const double epsilon = 0.000000001;
 
 //структура ответа
@@ -79,14 +89,14 @@ struct ans answer(struct coeffs EQ, int id)
     };
     switch (id)
     {
-        case 1:
+        case SQUARE_1:
             otvet.x1 = -EQ.b / 2 / EQ.a;
             break;
-        case 2:
+        case SQUARE_2:
             otvet.x1 = (-EQ.b + sqrt(D)) / 2 / EQ.a;
             otvet.x2 = (-EQ.b - sqrt(D)) / 2 / EQ.a;
             break;
-        case 3:
+        case LINE:
             otvet.x1 = -EQ.c / EQ.b;
             break;
         default:
