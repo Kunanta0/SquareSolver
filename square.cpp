@@ -1,52 +1,45 @@
-#ifndef TESTIK_H_INCLUDED
-#define TESTIK_H_INCLUDED
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+#include <math.h>
+#include "input.h"
+#include "output.h"
+#include "myassert.h"
+#include "testik.h"
 
-void test(int argc, char* argv[]);
+//0 - нет решения квадратного уравнения
+//1 - 1 решение квадратного уравнения
+//2 - 2 решения квадратного уравнения
+//3 - 1 решение, линейное уравнение
+//4 - бесконечное количество решений
+//5 - нет решений, противоречие
 
-//функция тестировщика
-void test(int argc, char* argv[])
+
+int main(int argc, char* argv[])
 {
-    int num_cols = 0;
+    setlocale(LC_ALL, "Russian");
 
-    FILE* fp = NULL;
-    MyAssert((fp = fopen(argv[1], "r")) != NULL);
-
-    char ch = '0';
-
-    while ((ch = getc(fp)) != EOF) if (ch == '\n') ++num_cols;
-    num_cols += 1;
-
-
-    fseek(fp, 0, SEEK_SET);
-
-    struct coeffs* cf = (struct coeffs*)calloc(num_cols, sizeof(struct coeffs));
-    struct ans* otvety = (struct ans*)calloc(num_cols, sizeof(struct ans));
-
-    for (int i = 0;i < num_cols; ++i)
+    while (true)
     {
-        fscanf(fp, "%lg %lg %lg %d %lg %lg",&(cf[i].a), &(cf[i].b), &(cf[i].c), &(otvety[i].id), &(otvety[i].x1), &(otvety[i].x2));
-    }
+        printf(YELLOW "Введите 0, чтобы завершить программу, 1, чтобы решать уравнение, 2, чтобы запустить тесты: ");
+        int check = menu();
+        if (check == 0) break;
+        else if (check == 1)
+        {
+            printf(YELLOW "Квадратное уравнение имеет вид ax^2 + bx + c = 0\n");
 
-    for (int i = 0;i < num_cols;++i)
-    {
-        double D = Discriminant(cf[i]);
-        int id0 = num_sol(cf[i]);
-        struct ans otvetik = answer(cf[i], id0);
-        if (otvety[i].id != 2)
-        {
-            if ((otvety[i].id == otvetik.id) && (isnull(otvety[i].x1, otvetik.x1)) && (isnull(otvety[i].x2, otvetik.x2))) printf(GREEN "Тест %d пройден\n" RESET, i + 1);
-            else printf(RED "Тест %d не пройден\n" RESET, i + 1);
+            struct coeffs EQ =
+            {
+                asknum('a'),
+                asknum('b'),
+                asknum('c'),
+            };
+            int id = num_sol(EQ);
+            struct ans otvet = answer(EQ, id);
+            printans(otvet);
         }
-        if (otvety[i].id == 2)
-        {
-            if (OK(cf[i], otvety[i].x1) && OK(cf[i], otvety[i].x2) && !(isnull(otvety[i].x1, otvety[i].x2))) printf(GREEN "Тест %d пройден\n" RESET, i + 1);
-            else printf(RED "Тест %d не пройден\n" RESET, i + 1);
-        }
+        else if (check == 2) test(argc, argv);
     }
-    free(cf);
-    free(otvety);
-    MyAssert(fclose(fp) == 0);
-    printf("\n");
+    printf(YELLOW "Пока!" RESET);
+    return 0;
 }
-
-#endif // TESTIK_H_INCLUDED
