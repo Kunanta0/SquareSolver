@@ -7,6 +7,8 @@
 #define RESET "\033[0m"
 #define BLUE "\033[34m"
 
+#define THINKING "Думаю..."
+
 #include "maths.h"
 
 void printans(struct ans);
@@ -15,25 +17,28 @@ int menu();
 //выводит ответ
 void printans(struct ans otvet)
 {
+    printf(THINKING);
+    Sleep(2000);
+    for (int i = 0;i < strlen(THINKING); ++i) printf("\b");
     switch (otvet.id)
     {
     case SQUARE_0:
-        printf(YELLOW "Квадратное уравнение не имеет действительных корней\n\n" RESET);
+        printf(YELLOW "Квадратное уравнение не имеет действительных корней, так как дискриминант меньше нуля\n\n" RESET);
         break;
     case SQUARE_1:
-        printf(YELLOW "1 решение: %lg\n\n" RESET, otvet.x1);
+        printf(YELLOW "1 решение, так как дискриминант равен нулю: %lg\n\n" RESET, otvet.x1);
         break;
     case SQUARE_2:
-        printf(YELLOW "2 решения: %lg и %lg\n\n" RESET, otvet.x1, otvet.x2);
+        printf(YELLOW "2 решения, так как дискриминант больше нуля: %lg и %lg\n\n" RESET, otvet.x1, otvet.x2);
         break;
     case LINE:
-        printf(YELLOW "Линейное уравнение, корень: %lg\n\n" RESET, otvet.x1);
+        printf(YELLOW "Линейное уравнение, так как коэффициент a = 0, корень: %lg\n\n" RESET, otvet.x1);
         break;
     case ALWAYS_TRUE:
-        printf(YELLOW "Бесконечное количество корней\n\n" RESET);
+        printf(YELLOW "Бесконечное количество корней, так как все коэффициенты равны нулю (0 = 0)\n\n" RESET);
         break;
     case ALWAYS_FALSE:
-        printf(YELLOW "Корней нет, противоречие\n\n" RESET);
+        printf(YELLOW "Корней нет, противоречие, так как все коэффициенты кроме c равны нулю, (c != 0)\n\n" RESET);
         break;
     }
 }
