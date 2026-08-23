@@ -1,11 +1,16 @@
 #ifndef INPUT_H_INCLUDED
 #define INPUT_H_INCLUDED
 
-double asknum(char);
+#include "log.h"
+
+double asknum(char, FILE*);
 
 //запрашивает коэффициенты квадратного уравнения
-double asknum(char coeff)
+double asknum(char coeff, FILE* fp)
 {
+    time_t now = time(NULL);
+    char* time_str = ctime(&now);
+    time_str[strcspn(time_str, "\n")] = 0;
     double n = 0;
     printf("Введите коэффициент %c: ", coeff);
     char ch = '\0';
@@ -17,10 +22,12 @@ double asknum(char coeff)
         if (cor != 1 || (ch = getchar()) != '\n')
         {
             while ((ch = getchar()) != '\n') continue;
+            write_log(fp, time_str, LOG_WARNING, "wrong users's input\n");
             printf("Неправильный ввод, введите число: ");
         }
         else notok = false;
     }
+    write_log(fp, time_str, LOG_INFO, "coefficient has been being inputted success\n");
     return n;
 }
 
