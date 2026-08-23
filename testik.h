@@ -1,15 +1,20 @@
 #ifndef TESTIK_H_INCLUDED
 #define TESTIK_H_INCLUDED
 
-void test(int argc, char* argv[]);
+#include "log.h"
+
+void test(int argc, char* argv[], FILE*);
 
 //функция тестировщика
-void test(int argc, char* argv[])
+void test(int argc, char* argv[], FILE* flog)
 {
     int num_cols = 0;
 
+    time_t now = time(NULL);
+    char* time_str = ctime(&now);
+    time_str[strcspn(time_str, "\n")] = 0;
     FILE* fp = NULL;
-    MyAssert((fp = fopen(argv[1], "r")) != NULL);
+    MyAssert((fp = fopen(argv[1], "r")) != NULL, flog, time_str);
 
     char ch = '0';
 
@@ -20,7 +25,9 @@ void test(int argc, char* argv[])
     fseek(fp, 0, SEEK_SET);
 
     struct coeffs* cf = (struct coeffs*)calloc(num_cols, sizeof(struct coeffs));
+    write_log(flog, time_str, LOG_INFO, "func calloc took %d numbers memory of struct coeffs", num_cols);
     struct ans* otvety = (struct ans*)calloc(num_cols, sizeof(struct ans));
+    write_log(flog, time_str, LOG_INFO, "func calloc took %d numbers memory of struct ans", num_cols);
 
     for (int i = 0;i < num_cols; ++i)
     {
@@ -34,18 +41,34 @@ void test(int argc, char* argv[])
         struct ans otvetik = answer(cf[i], id0);
         if (otvety[i].id != 2)
         {
-            if ((otvety[i].id == otvetik.id) && (isnull(otvety[i].x1, otvetik.x1)) && (isnull(otvety[i].x2, otvetik.x2))) printf(GREEN "Тест %d пройден\n" RESET, i + 1);
-            else printf(RED "Тест %d не пройден\n" RESET, i + 1);
+            if ((otvety[i].id == otvetik.id) && (isnull(otvety[i].x1, otvetik.x1)) && (isnull(otvety[i].x2, otvetik.x2)))
+            {
+                printf(GREEN "Тест %d пройден\n" RESET, i + 1);
+                write_log(flog, time_str, LOG_INFO, "Test %d succeed", i + 1);
+            }
+            else
+            {
+                printf(RED "Тест %d не пройден\n" RESET, i + 1);
+                write_log(flog, time_str, LOG_WARNING, "Test %d unsucceed", i + 1);
+            }
         }
         if (otvety[i].id == 2)
         {
-            if (OK(cf[i], otvety[i].x1) && OK(cf[i], otvety[i].x2) && !(isnull(otvety[i].x1, otvety[i].x2))) printf(GREEN "Тест %d пройден\n" RESET, i + 1);
-            else printf(RED "Тест %d не пройден\n" RESET, i + 1);
+            if (OK(cf[i], otvety[i].x1) && OK(cf[i], otvety[i].x2) && !(isnull(otvety[i].x1, otvety[i].x2)))
+            {
+                printf(GREEN "Тест %d пройден\n" RESET, i + 1);
+                write_log(flog, time_str, LOG_INFO, "Test %d succeed", i + 1);
+            }
+            else
+            {
+                printf(RED "Тест %d не пройден\n" RESET, i + 1);
+                write_log(flog, time_str, LOG_WARNING, "Test %d unsucceed", i + 1);
+            }
         }
     }
     free(cf);
     free(otvety);
-    MyAssert(fclose(fp) == 0);
+    MyAssert(fclose(fp) == 0, flog, time_str);
     printf("\n");
 }
 
