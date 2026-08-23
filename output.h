@@ -18,22 +18,22 @@ void printans(struct ans otvet)
     switch (otvet.id)
     {
     case SQUARE_0:
-        printf("Квадратное уравнение не имеет действительных корней\n\n");
+        printf(YELLOW "Квадратное уравнение не имеет действительных корней\n\n" RESET);
         break;
     case SQUARE_1:
-        printf("1 решение: %lg\n\n", otvet.x1);
+        printf(YELLOW "1 решение: %lg\n\n" RESET, otvet.x1);
         break;
     case SQUARE_2:
-        printf("2 решения: %lg и %lg\n\n", otvet.x1, otvet.x2);
+        printf(YELLOW "2 решения: %lg и %lg\n\n" RESET, otvet.x1, otvet.x2);
         break;
     case LINE:
-        printf("Линейное уравнение, корень: %lg\n\n", otvet.x1);
+        printf(YELLOW "Линейное уравнение, корень: %lg\n\n" RESET, otvet.x1);
         break;
     case ALWAYS_TRUE:
-        printf("Бесконечное количество корней\n\n");
+        printf(YELLOW "Бесконечное количество корней\n\n" RESET);
         break;
     case ALWAYS_FALSE:
-        printf("Корней нет, противоречие\n\n");
+        printf(YELLOW "Корней нет, противоречие\n\n" RESET);
         break;
     }
 }
