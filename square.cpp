@@ -21,12 +21,12 @@ int main(int argc, char* argv[])
 
     while (true)
     {
-        printf(YELLOW "Введите 0, чтобы завершить программу, 1, чтобы решать уравнение, 2, чтобы запустить тесты: ");
+        printf("Введите 0, чтобы завершить программу, 1, чтобы решать уравнение, 2, чтобы запустить тесты: ");
         int check = menu();
         if (check == 0) break;
         else if (check == 1)
         {
-            printf(YELLOW "Квадратное уравнение имеет вид ax^2 + bx + c = 0\n");
+            printf(YELLOW "Квадратное уравнение имеет вид ax^2 + bx + c = 0\n" RESET);
 
             struct coeffs EQ =
             {
