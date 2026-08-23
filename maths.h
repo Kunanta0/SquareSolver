@@ -56,7 +56,10 @@ int num_sol(struct coeffs EQ)
     double D = Discriminant(EQ);
     if (!isnull(EQ.a, 0))
     {
-        if (D < 0) return 0;
+        if (D < 0)
+        {
+            return 0;
+        }
         else if (isnull(D, 0)) return 1;
         else return 2;
     }
