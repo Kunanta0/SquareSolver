@@ -9,6 +9,7 @@
 #include "myassert.h"
 #include "testik.h"
 #include "log.h"
+#define DEBUG
 
 //0 - нет решения квадратного уравнения
 //1 - 1 решение квадратного уравнения
@@ -30,15 +31,19 @@ int main(int argc, char* argv[])
     while (true)
     {
         printf("Введите 0, чтобы завершить программу, 1, чтобы решать уравнение, 2, чтобы запустить тесты: ");
-        int check = menu();
+        int check = menu(fp);
         if (check == 0)
         {
+            #ifdef DEBUG
             write_log(fp, time_str, LOG_INFO, PR_VAR(check, d));
+            #endif
             break;
         }
         else if (check == 1)
         {
+            #ifdef DEBUG
             write_log(fp, time_str, LOG_INFO, PR_VAR(check, d));
+            #endif
             printf(YELLOW "Квадратное уравнение имеет вид ax^2 + bx + c = 0\n" RESET);
 
             struct coeffs EQ =
@@ -48,13 +53,17 @@ int main(int argc, char* argv[])
                 asknum('c', fp),
             };
             int id = num_sol(EQ);
+            #ifdef DEBUG
             write_log(fp, time_str, LOG_INFO, PR_VAR(id, d));
+            #endif
             struct ans otvet = answer(EQ, id);
             printans(otvet, fp);
         }
         else if (check == 2)
         {
+            #ifdef DEBUG
             write_log(fp, time_str, LOG_INFO, PR_VAR(check, d));
+            #endif
             test(argc, argv, fp);
         }
     }
