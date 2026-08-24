@@ -1,5 +1,6 @@
 #ifndef INPUT_H_INCLUDED
 #define INPUT_H_INCLUDED
+#define DEBUG
 
 #include "log.h"
 
@@ -22,12 +23,16 @@ double asknum(char coeff, FILE* fp)
         if (cor != 1 || (ch = getchar()) != '\n')
         {
             while ((ch = getchar()) != '\n') continue;
-            write_log(fp, time_str, LOG_WARNING, "wrong users's input\n");
+            #ifdef DEBUG
+            write_log(fp, time_str, LOG_INFO, "wrong users's input\n");
+            #endif
             printf("Неправильный ввод, введите число: ");
         }
         else notok = false;
     }
+    #ifdef DEBUG
     write_log(fp, time_str, LOG_INFO, "coefficient has been being inputted success\n");
+    #endif
     return n;
 }
 
