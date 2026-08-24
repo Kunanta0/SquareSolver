@@ -4,12 +4,13 @@
 #include <locale.h>
 #include <math.h>
 #include <windows.h>
+#define DEBUG
 #include "input.h"
 #include "output.h"
 #include "myassert.h"
 #include "testik.h"
 #include "log.h"
-#define DEBUG
+
 
 //0 - нет решения квадратного уравнения
 //1 - 1 решение квадратного уравнения
