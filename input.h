@@ -1,6 +1,5 @@
 #ifndef INPUT_H_INCLUDED
 #define INPUT_H_INCLUDED
-#define DEBUG
 
 #include "log.h"
 
