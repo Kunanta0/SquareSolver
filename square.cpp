@@ -4,7 +4,6 @@
 #include <locale.h>
 #include <math.h>
 #include <windows.h>
-#define DEBUG
 #include "input.h"
 #include "output.h"
 #include "myassert.h"
