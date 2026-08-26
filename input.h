@@ -1,39 +1,38 @@
 #ifndef INPUT_H_INCLUDED
 #define INPUT_H_INCLUDED
 
-#include "log.h"
-
 double asknum(char, FILE*);
 
 //запрашивает коэффициенты квадратного уравнения
 double asknum(char coeff, FILE* fp)
 {
-    time_t now = time(NULL);
-    char* time_str = ctime(&now);
-    time_str[strcspn(time_str, "\n")] = 0;
     double n = 0;
-    printf("Введите коэффициент %c: ", coeff);
     char ch = '\0';
-    bool notok = true;
+    bool bad_input = false;
 
-    while(notok)
+    printf("Введите коэффициент %c: ", coeff);
+
+    do
     {
-        int cor = scanf("%lg", &n);
-        if (cor != 1 || (ch = getchar()) != '\n')
+        int coeff_entered = scanf("%lg", &n);
+        if (coeff_entered != 1 || (ch = getchar()) != '\n')
         {
-            while ((ch = getchar()) != '\n') continue;
+            printf("\"");
+            if (coeff_entered == 1) printf("%lg", n);
+            putchar(ch);
+            while ((ch = getchar()) != '\n') putchar(ch);
             #ifdef DEBUG
-            write_log(fp, time_str, LOG_INFO, "wrong users's input\n");
+            write_log(fp, LOG_INFO, "wrong users's input\n");
             #endif
-            printf("Неправильный ввод, введите число: ");
+            printf("\" не является числом, введите число: ");
+            bad_input = true;
         }
-        else notok = false;
-    }
+        else bad_input = false;
+    } while(bad_input);
     #ifdef DEBUG
-    write_log(fp, time_str, LOG_INFO, "coefficient has been being inputted success\n");
+    write_log(fp, LOG_INFO, "coefficient has been being inputted success\n");
     #endif
     return n;
 }
-
 
 #endif // INPUT_H_INCLUDED
