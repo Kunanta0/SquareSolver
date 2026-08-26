@@ -1,84 +1,78 @@
 #ifndef TESTIK_H_INCLUDED
 #define TESTIK_H_INCLUDED
 
-#include "log.h"
-
 void test(int argc, char* argv[], FILE*);
 
 //функция тестировщика
 void test(int argc, char* argv[], FILE* flog)
 {
-    int num_cols = 0;
-
-    time_t now = time(NULL);
-    char* time_str = ctime(&now);
-    time_str[strcspn(time_str, "\n")] = 0;
-    FILE* fp = NULL;
-    MyAssert((fp = fopen(argv[1], "r")) != NULL, flog, time_str);
-
+    int num_strs = 0;
     char ch = '0';
+    FILE* fp = NULL;
 
-    while ((ch = getc(fp)) != EOF) if (ch == '\n') ++num_cols;
-    num_cols += 1;
-
+    if ((fp = fopen(argv[1], "r")) == NULL) printf("Ошибка открытия файла\n");
+    while ((ch = getc(fp)) != EOF)
+    {
+        if (ch == '\n') ++num_strs;
+    }
+    num_strs += 1;
 
     fseek(fp, 0, SEEK_SET);
 
-    struct coeffs* cf = (struct coeffs*)calloc(num_cols, sizeof(struct coeffs));
-    struct ans* otvety = (struct ans*)calloc(num_cols, sizeof(struct ans));
+    struct coeffs* cf = (struct coeffs*)calloc(num_strs, sizeof(struct coeffs));
+    struct ans* answers = (struct ans*)calloc(num_strs, sizeof(struct ans));
+
     #ifdef DEBUG
-    write_log(flog, time_str, LOG_INFO, "func calloc took %d numbers memory of struct coeffs", num_cols);
-    write_log(flog, time_str, LOG_INFO, "func calloc took %d numbers memory of struct ans", num_cols);
+    write_log(flog, LOG_INFO, "func calloc took %d numbers memory of struct ans\n", num_cols);
+    write_log(flog, LOG_INFO, "func calloc took %d numbers memory of struct coeffs\n", num_cols);
     #endif
 
-    for (int i = 0;i < num_cols; ++i)
+    for (unsigned int i = 0;i < num_strs; ++i)
     {
-        fscanf(fp, "%lg %lg %lg %d %lg %lg",&(cf[i].a), &(cf[i].b), &(cf[i].c), &(otvety[i].id), &(otvety[i].x1), &(otvety[i].x2));
-    }
-
-    for (int i = 0;i < num_cols;++i)
-    {
-        double D = Discriminant(cf[i]);
-        int id0 = num_sol(cf[i]);
-        struct ans otvetik = answer(cf[i], id0);
-        if (otvety[i].id != 2)
+        MyAssert(0 <= i && i < num_strs);
+        struct ans ans_ref = answers[i];
+        struct coeffs coefficients = cf[i];
+        fscanf(fp, "%lg %lg %lg %d %lg %lg",&coefficients.a, &coefficients.b, &coefficients.c, &ans_ref.id, &ans_ref.x1, &ans_ref.x2);
+        struct ans correct = answer(coefficients);
+        if (ans_ref.id != 2)
         {
-            if ((otvety[i].id == otvetik.id) && (isnull(otvety[i].x1, otvetik.x1)) && (isnull(otvety[i].x2, otvetik.x2)))
+            if (ans_ref.id == correct.id && issame(ans_ref.x1, correct.x1) && issame(ans_ref.x2, correct.x2))
             {
                 printf(GREEN "Тест %d пройден\n" RESET, i + 1);
                 #ifdef DEBUG
-                write_log(flog, time_str, LOG_INFO, "Test %d succeed", i + 1);
+                write_log(flog, LOG_INFO, "Test %d succeed\n", i + 1);
                 #endif
             }
             else
             {
                 printf(RED "Тест %d не пройден\n" RESET, i + 1);
                 #ifdef DEBUG
-                write_log(flog, time_str, LOG_WARNING, "Test %d unsucceed", i + 1);
+                write_log(flog, LOG_WARNING, "Test %d unsucceed\n", i + 1);
                 #endif
             }
         }
-        if (otvety[i].id == 2)
+        if (ans_ref.id == 2)
         {
-            if (OK(cf[i], otvety[i].x1) && OK(cf[i], otvety[i].x2) && !(isnull(otvety[i].x1, otvety[i].x2)))
+            if (ans_ref.id == correct.id)
             {
+                if ((issame(ans_ref.x1, correct.x1) && issame(ans_ref.x2, correct.x2)) || (issame(ans_ref.x1, correct.x2) && issame(ans_ref.x2, correct.x1)))
                 printf(GREEN "Тест %d пройден\n" RESET, i + 1);
                 #ifdef DEBUG
-                write_log(flog, time_str, LOG_INFO, "Test %d succeed", i + 1);
+                write_log(flog, LOG_INFO, "Test %d succeed\n", i + 1);
                 #endif
             }
             else
             {
                 printf(RED "Тест %d не пройден\n" RESET, i + 1);
                 #ifdef DEBUG
-                write_log(flog, time_str, LOG_WARNING, "Test %d unsucceed", i + 1);
+                write_log(flog, LOG_WARNING, "Test %d unsucceed\n", i + 1);
                 #endif
             }
         }
     }
     free(cf);
-    free(otvety);
-    MyAssert(fclose(fp) == 0, flog, time_str);
+    free(answers);
+    if (fclose(fp) != 0) printf("Ошибка закрытия файла\n");
     printf("\n");
 }
 
