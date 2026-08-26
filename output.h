@@ -63,7 +63,7 @@ void printans(struct ans otvet, FILE* fp)
         write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
         #endif
         break;
-    case INF_ROOTS:
+    case ZERO_EQUALS_NO_ZERO:
         printf(YELLOW "Корней нет, противоречие, так как все коэффициенты кроме c равны нулю, (c != 0)\n\n" RESET);
         #ifdef DEBUG
         write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
@@ -76,12 +76,11 @@ void printans(struct ans otvet, FILE* fp)
 int menu(FILE* fp)
 {
     char ch = '\0';
-    bool bad_input = true;
     int n = 0;
     do
     {
         int coeff_entered = scanf("%d", &n);
-        if (coeff_entered != 1 || (ch = getchar()) != '\n')
+        if (coeff_entered != 1 || (ch = getchar()) != '\n' || (n != 0 && n != 1 && n != 2))
         {
             printf("\"");
             if (coeff_entered == 1) printf("%d", n);
@@ -92,18 +91,8 @@ int menu(FILE* fp)
             write_log(fp, LOG_INFO, "wrong users's input\n");
             #endif // DEBUG
         }
-        else
-        {
-            if (n != 0 && n != 1 && n != 2)
-            {
-                printf("%d - неправильный ввод, введите 0, либо 1, либо 2: ", n);
-                #ifdef DEBUG
-                write_log(fp, LOG_INFO, "wrong users's input\n");
-                #endif
-            }
-            else bad_input = false;
-        }
-    } while(bad_input);
+        else break;
+    } while(true);
     #ifdef DEBUG
     write_log(fp, LOG_INFO, "in menu user entered "PR_VAR(n, d));
     #endif
