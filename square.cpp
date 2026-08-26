@@ -22,7 +22,9 @@ int main(int argc, char* argv[])
 {
     setlocale(LC_ALL, "Russian");
     FILE* fp = NULL;
+    #ifdef DEBUG
     fp = fopen("log.txt", "a");
+    #endif
     while (true)
     {
         printf("Введите 0, чтобы завершить программу, 1, чтобы решать уравнение, 2, чтобы запустить тесты: ");
@@ -42,22 +44,25 @@ int main(int argc, char* argv[])
             printf(YELLOW "Квадратное уравнение имеет вид ax^2 + bx + c = 0\n" RESET);
 
             struct coeffs EQ = init_eq(fp);
+            struct ans ans_prog = answer(EQ);
 
             #ifdef DEBUG
-            write_log(fp, LOG_INFO, PR_VAR(id, d));
+            write_log(fp, LOG_INFO, PR_VAR(ans_prog.id, d));
             #endif
-            struct ans correct = answer(EQ);
-            printans(correct, fp);
+            printans(ans_prog, fp);
         }
         else
         {
             #ifdef DEBUG
             write_log(fp, LOG_INFO, PR_VAR(check, d));
             #endif
-            test(argc, argv, fp);
+            test(argv[1], fp);
         }
     }
     printf(YELLOW "Пока!" RESET);
+    #ifdef DEBUG
     if (fclose(fp) != 0) printf("Ошибка открытия файла\n");
+    #endif
     return 0;
 }
+//getopt_long --test
