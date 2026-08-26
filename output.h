@@ -9,6 +9,8 @@
 
 #define THINKING "Думаю..."
 
+const int ms_time = 2000;
+
 #include "maths.h"
 
 
@@ -18,52 +20,53 @@ int menu(FILE* );
 //выводит ответ
 void printans(struct ans otvet, FILE* fp)
 {
-    time_t now = time(NULL);
-    char* time_str = ctime(&now);
-    time_str[strcspn(time_str, "\n")] = 0;
     printf(THINKING);
-    Sleep(2000);
-    for (int i = 0;i < strlen(THINKING); ++i) printf("\b");
+
+    Sleep(ms_time);
+    for (unsigned int i = 0; i < strlen(THINKING); ++i)
+    {
+        printf("\b");
+    }
     switch (otvet.id)
     {
-    case SQUARE_0:
+    case QUAD_0_ROOTS:
         printf(YELLOW "Квадратное уравнение не имеет действительных корней, так как дискриминант меньше нуля\n\n" RESET);
         #ifdef DEBUG
-        write_log(fp, time_str, LOG_INFO, PR_VAR(otvet.id, d));
+        write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
         #endif
         break;
-    case SQUARE_1:
+    case QUAD_1_ROOTS:
         printf(YELLOW "1 решение, так как дискриминант равен нулю: %lg\n\n" RESET, otvet.x1);
         #ifdef DEBUG
-        write_log(fp, time_str, LOG_INFO, PR_VAR(otvet.id, d));
-        write_log(fp, time_str, LOG_INFO, PR_VAR(otvet.x1, lg));
+        write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
+        write_log(fp, LOG_INFO, PR_VAR(otvet.x1, lg));
         #endif
         break;
-    case SQUARE_2:
+    case QUAD_2_ROOTS:
         printf(YELLOW "2 решения, так как дискриминант больше нуля: %lg и %lg\n\n" RESET, otvet.x1, otvet.x2);
         #ifdef DEBUG
-        write_log(fp, time_str, LOG_INFO, PR_VAR(otvet.id, d));
-        write_log(fp, time_str, LOG_INFO, PR_VAR(otvet.x1, lg));
-        write_log(fp, time_str, LOG_INFO, PR_VAR(otvet.x2, lg));
+        write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
+        write_log(fp, LOG_INFO, PR_VAR(otvet.x1, lg));
+        write_log(fp, LOG_INFO, PR_VAR(otvet.x2, lg));
         #endif
         break;
     case LINE:
         printf(YELLOW "Линейное уравнение, так как коэффициент a = 0, корень: %lg\n\n" RESET, otvet.x1);
         #ifdef DEBUG
-        write_log(fp, time_str, LOG_INFO, PR_VAR(otvet.id, d));
-        write_log(fp, time_str, LOG_INFO, PR_VAR(otvet.x1, lg));
+        write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
+        write_log(fp, LOG_INFO, PR_VAR(otvet.x1, lg));
         #endif
         break;
-    case ALWAYS_TRUE:
+    case ZERO_EQUALS_ZERO:
         printf(YELLOW "Бесконечное количество корней, так как все коэффициенты равны нулю (0 = 0)\n\n" RESET);
         #ifdef DEBUG
-        write_log(fp, time_str, LOG_INFO, PR_VAR(otvet.id, d));
+        write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
         #endif
         break;
-    case ALWAYS_FALSE:
+    case INF_ROOTS:
         printf(YELLOW "Корней нет, противоречие, так как все коэффициенты кроме c равны нулю, (c != 0)\n\n" RESET);
         #ifdef DEBUG
-        write_log(fp, time_str, LOG_INFO, PR_VAR(otvet.id, d));
+        write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
         #endif
         break;
     }
@@ -72,38 +75,37 @@ void printans(struct ans otvet, FILE* fp)
 //меню, которое запрашивает у пользователя запуск программы снова
 int menu(FILE* fp)
 {
-    time_t now = time(NULL);
-    char* time_str = ctime(&now);
-    time_str[strcspn(time_str, "\n")] = 0;
     char ch = '\0';
-    bool notok = true;
+    bool bad_input = true;
     int n = 0;
-
-    while(notok)
+    do
     {
-        int cor = scanf("%d", &n);
-        if (cor != 1 || (ch = getchar()) != '\n')
+        int coeff_entered = scanf("%d", &n);
+        if (coeff_entered != 1 || (ch = getchar()) != '\n')
         {
-            while ((ch = getchar()) != '\n') continue;
+            printf("\"");
+            if (coeff_entered == 1) printf("%d", n);
+            putchar(ch);
+            while ((ch = getchar()) != '\n') putchar(ch);
+            printf("\" - неправильный ввод, введите 0, либо 1, либо 2: ");
             #ifdef DEBUG
-            printf("Неправильный ввод, введите 0, либо 1, либо 2: ");
-            write_log(fp, time_str, LOG_INFO, "wrong users's input\n");
+            write_log(fp, LOG_INFO, "wrong users's input\n");
             #endif // DEBUG
         }
         else
         {
             if (n != 0 && n != 1 && n != 2)
             {
-                printf("Неправильный ввод, введите 0, либо 1, либо 2: ");
+                printf("%d - неправильный ввод, введите 0, либо 1, либо 2: ", n);
                 #ifdef DEBUG
-                write_log(fp, time_str, LOG_INFO, "wrong users's input\n");
+                write_log(fp, LOG_INFO, "wrong users's input\n");
                 #endif
             }
-            else notok = false;
+            else bad_input = false;
         }
-    }
+    } while(bad_input);
     #ifdef DEBUG
-    write_log(fp, time_str, LOG_INFO, "in menu user entered "PR_VAR(n, d));
+    write_log(fp, LOG_INFO, "in menu user entered "PR_VAR(n, d));
     #endif
     return n;
 }
