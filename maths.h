@@ -10,7 +10,7 @@ enum Equation_id
     QUAD_2_ROOTS,
     LINE,
     ZERO_EQUALS_ZERO,
-    INF_ROOTS
+    ZERO_EQUALS_NO_ZERO
 };
 
 const double epsilon = 1e-7;
@@ -80,26 +80,25 @@ struct ans answer(struct coeffs EQ)
 }
 
 //возвращает то, какой случай реализуется
-int get_id(struct coeffs EQ, double D)
+int get_id(struct coeffs EQ, double D) //enum
 {
     int id = 0;
-    D = Discriminant(EQ);
     if(!(issame(EQ.a, 0)))
     {
-        if (D < 0) id = 0;
-        else if (issame(D, 0)) id = 1;
-        else id = 2;
+        if (D < 0) id = QUAD_0_ROOTS;
+        else if (issame(D, 0)) id = QUAD_1_ROOTS;
+        else id = QUAD_2_ROOTS;
     }
     else
     {
         if (issame(EQ.b, 0))
         {
-            if (issame(EQ.c, 0)) id = 4;
-            else id = 5;
+            if (issame(EQ.c, 0)) id = ZERO_EQUALS_ZERO;
+            else id = ZERO_EQUALS_NO_ZERO;
         }
         else
         {
-            id = 3;
+            id = LINE;
         }
     }
     return id;
