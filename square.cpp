@@ -4,11 +4,11 @@
 #include <locale.h>
 #include <math.h>
 #include <windows.h>
+#include "log.h"
 #include "input.h"
 #include "output.h"
 #include "myassert.h"
 #include "testik.h"
-#include "log.h"
 
 //0 - нет решения квадратного уравнения
 //1 - 1 решение квадратного уравнения
