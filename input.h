@@ -8,7 +8,6 @@ double asknum(char coeff, FILE* fp)
 {
     double n = 0;
     char ch = '\0';
-    bool bad_input = false;
 
     printf("Введите коэффициент %c: ", coeff);
 
@@ -25,10 +24,9 @@ double asknum(char coeff, FILE* fp)
             write_log(fp, LOG_INFO, "wrong users's input\n");
             #endif
             printf("\" не является числом, введите число: ");
-            bad_input = true;
         }
-        else bad_input = false;
-    } while(bad_input);
+        else break;
+    } while(true);
     #ifdef DEBUG
     write_log(fp, LOG_INFO, "coefficient has been being inputted success\n");
     #endif
