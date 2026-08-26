@@ -1,20 +1,19 @@
 #ifndef MATHS_H_INCLUDED
 #define MATHS_H_INCLUDED
 
-#define OK(str, x) isnull(x, (-str.b + sqrt(D)) / 2 / str.a) || isnull(x, (-str.b - sqrt(D)) / 2 / str.a)
 #define ZERO 0
 
-enum
+enum Equation_id
 {
-    SQUARE_0,
-    SQUARE_1,
-    SQUARE_2,
+    QUAD_0_ROOTS,
+    QUAD_1_ROOTS,
+    QUAD_2_ROOTS,
     LINE,
-    ALWAYS_TRUE,
-    ALWAYS_FALSE
+    ZERO_EQUALS_ZERO,
+    INF_ROOTS
 };
 
-const double epsilon = 0.000000001;
+const double epsilon = 1e-7;
 
 //структура ответа
 struct ans
@@ -32,11 +31,12 @@ struct coeffs
     double c = ZERO;
 };
 
-//прототипы функций, объявления структур
+//прототипы функций
+int get_id(struct coeffs, double);
 struct ans answer(struct coeffs, int);
-int num_sol(struct coeffs);
 double Discriminant(struct coeffs);
-bool isnull(double, double);
+bool issame(double, double);
+struct coeffs init_eq(FILE* );
 
 //считает дискриминант
 double Discriminant(struct coeffs EQ)
@@ -44,47 +44,18 @@ double Discriminant(struct coeffs EQ)
     return EQ.b * EQ.b - 4 * EQ.a * EQ.c;
 }
 
-//обрабатывает погрешность нулевого ввода
-bool isnull(double a, double b)
+//обрабатывает погрешность одинакового ввода
+bool issame(double a, double b)
 {
-    return (abs(a - b) < epsilon) ? true : false;
-}
-
-//выводит уникальный номер, показывающий, какой случай реализуется
-int num_sol(struct coeffs EQ)
-{
-    double D = Discriminant(EQ);
-    if (!isnull(EQ.a, 0))
-    {
-        if (D < 0)
-        {
-            return 0;
-        }
-        else if (isnull(D, 0)) return 1;
-        else return 2;
-    }
-    else
-    {
-        if (isnull(EQ.b, 0))
-        {
-            if (isnull(EQ.c, 0))
-            {
-                return 4;
-            }
-            else return 5;
-        }
-        else
-        {
-            return 3;
-        }
-    }
+    return (abs(a - b) < epsilon);
 }
 
 //функция, которая возвращает структуру, которая выдает ответ
-struct ans answer(struct coeffs EQ, int id)
+struct ans answer(struct coeffs EQ)
 {
     double D = Discriminant(EQ);
-    struct ans otvet =
+    int id = get_id(EQ, D);
+    struct ans correct =
     {
         id,
         ZERO,
@@ -92,20 +63,58 @@ struct ans answer(struct coeffs EQ, int id)
     };
     switch (id)
     {
-        case SQUARE_1:
-            otvet.x1 = -EQ.b / 2 / EQ.a;
+        case QUAD_1_ROOTS:
+            correct.x1 = -EQ.b / 2 / EQ.a;
             break;
-        case SQUARE_2:
-            otvet.x1 = (-EQ.b + sqrt(D)) / 2 / EQ.a;
-            otvet.x2 = (-EQ.b - sqrt(D)) / 2 / EQ.a;
+        case QUAD_2_ROOTS:
+            correct.x1 = (-EQ.b + sqrt(D)) / 2 / EQ.a;
+            correct.x2 = (-EQ.b - sqrt(D)) / 2 / EQ.a;
             break;
         case LINE:
-            otvet.x1 = -EQ.c / EQ.b;
+            correct.x1 = -EQ.c / EQ.b;
             break;
         default:
             break;
     }
-    return otvet;
+    return correct;
+}
+
+//возвращает то, какой случай реализуется
+int get_id(struct coeffs EQ, double D)
+{
+    int id = 0;
+    D = Discriminant(EQ);
+    if(!(issame(EQ.a, 0)))
+    {
+        if (D < 0) id = 0;
+        else if (issame(D, 0)) id = 1;
+        else id = 2;
+    }
+    else
+    {
+        if (issame(EQ.b, 0))
+        {
+            if (issame(EQ.c, 0)) id = 4;
+            else id = 5;
+        }
+        else
+        {
+            id = 3;
+        }
+    }
+    return id;
+}
+
+//инициализирует структуру
+struct coeffs init_eq(FILE* fp)
+{
+    struct coeffs EQ =
+    {
+        asknum('a', fp),
+        asknum('b', fp),
+        asknum('c', fp),
+    };
+    return EQ;
 }
 
 #endif // MATHS_H_INCLUDED
