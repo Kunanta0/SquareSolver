@@ -8,8 +8,11 @@ enum
     LOG_ERROR
 };
 
-#define write_log(file, time, level, ...)\
+#define write_log(file, level, ...)\
 {\
+    time_t now = time(NULL);\
+    char* time_str = ctime(&now);\
+    time_str[strcspn(time_str, "\n")] = 0;\
     fprintf(file, "%s ", time);\
     fprintf(file, #level": " __VA_ARGS__);\
 }
