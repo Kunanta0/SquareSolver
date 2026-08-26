@@ -46,12 +46,16 @@ void test(int argc, char* argv[], FILE* flog)
             if ((otvety[i].id == otvetik.id) && (isnull(otvety[i].x1, otvetik.x1)) && (isnull(otvety[i].x2, otvetik.x2)))
             {
                 printf(GREEN "Тест %d пройден\n" RESET, i + 1);
+                #ifdef DEBUG
                 write_log(flog, time_str, LOG_INFO, "Test %d succeed", i + 1);
+                #endif
             }
             else
             {
                 printf(RED "Тест %d не пройден\n" RESET, i + 1);
+                #ifdef DEBUG
                 write_log(flog, time_str, LOG_WARNING, "Test %d unsucceed", i + 1);
+                #endif
             }
         }
         if (otvety[i].id == 2)
@@ -59,12 +63,16 @@ void test(int argc, char* argv[], FILE* flog)
             if (OK(cf[i], otvety[i].x1) && OK(cf[i], otvety[i].x2) && !(isnull(otvety[i].x1, otvety[i].x2)))
             {
                 printf(GREEN "Тест %d пройден\n" RESET, i + 1);
+                #ifdef DEBUG
                 write_log(flog, time_str, LOG_INFO, "Test %d succeed", i + 1);
+                #endif
             }
             else
             {
                 printf(RED "Тест %d не пройден\n" RESET, i + 1);
+                #ifdef DEBUG
                 write_log(flog, time_str, LOG_WARNING, "Test %d unsucceed", i + 1);
+                #endif
             }
         }
     }
