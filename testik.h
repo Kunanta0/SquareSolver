@@ -25,9 +25,11 @@ void test(int argc, char* argv[], FILE* flog)
     fseek(fp, 0, SEEK_SET);
 
     struct coeffs* cf = (struct coeffs*)calloc(num_cols, sizeof(struct coeffs));
-    write_log(flog, time_str, LOG_INFO, "func calloc took %d numbers memory of struct coeffs", num_cols);
     struct ans* otvety = (struct ans*)calloc(num_cols, sizeof(struct ans));
+    #ifdef DEBUG
+    write_log(flog, time_str, LOG_INFO, "func calloc took %d numbers memory of struct coeffs", num_cols);
     write_log(flog, time_str, LOG_INFO, "func calloc took %d numbers memory of struct ans", num_cols);
+    #endif
 
     for (int i = 0;i < num_cols; ++i)
     {
