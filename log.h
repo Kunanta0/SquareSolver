@@ -13,7 +13,7 @@ enum
     time_t now = time(NULL);\
     char* time_str = ctime(&now);\
     time_str[strcspn(time_str, "\n")] = 0;\
-    fprintf(file, "%s ", time);\
+    fprintf(file, "%s ", time_str);\
     fprintf(file, #level": " __VA_ARGS__);\
 }
 #define PR_VAR(x, specif) #x " = %" #specif "\n", x
