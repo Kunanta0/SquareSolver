@@ -10,7 +10,6 @@
 #include "testik.h"
 #include "log.h"
 
-
 //0 - нет решения квадратного уравнения
 //1 - 1 решение квадратного уравнения
 //2 - 2 решения квадратного уравнения
@@ -21,13 +20,9 @@
 
 int main(int argc, char* argv[])
 {
-    time_t now = time(NULL);
-    char* time_str = ctime(&now);
-    time_str[strcspn(time_str, "\n")] = 0;
+    setlocale(LC_ALL, "Russian");
     FILE* fp = NULL;
     fp = fopen("log.txt", "a");
-    setlocale(LC_ALL, "Russian");
-
     while (true)
     {
         printf("Введите 0, чтобы завершить программу, 1, чтобы решать уравнение, 2, чтобы запустить тесты: ");
@@ -35,39 +30,34 @@ int main(int argc, char* argv[])
         if (check == 0)
         {
             #ifdef DEBUG
-            write_log(fp, time_str, LOG_INFO, PR_VAR(check, d));
+            write_log(fp, LOG_INFO, PR_VAR(check, d));
             #endif
             break;
         }
         else if (check == 1)
         {
             #ifdef DEBUG
-            write_log(fp, time_str, LOG_INFO, PR_VAR(check, d));
+            write_log(fp, LOG_INFO, PR_VAR(check, d));
             #endif
             printf(YELLOW "Квадратное уравнение имеет вид ax^2 + bx + c = 0\n" RESET);
 
-            struct coeffs EQ =
-            {
-                asknum('a', fp),
-                asknum('b', fp),
-                asknum('c', fp),
-            };
-            int id = num_sol(EQ);
+            struct coeffs EQ = init_eq(fp);
+
             #ifdef DEBUG
-            write_log(fp, time_str, LOG_INFO, PR_VAR(id, d));
+            write_log(fp, LOG_INFO, PR_VAR(id, d));
             #endif
-            struct ans otvet = answer(EQ, id);
-            printans(otvet, fp);
+            struct ans correct = answer(EQ);
+            printans(correct, fp);
         }
-        else if (check == 2)
+        else
         {
             #ifdef DEBUG
-            write_log(fp, time_str, LOG_INFO, PR_VAR(check, d));
+            write_log(fp, LOG_INFO, PR_VAR(check, d));
             #endif
             test(argc, argv, fp);
         }
     }
     printf(YELLOW "Пока!" RESET);
-    fclose(fp);
+    if (fclose(fp) != 0) printf("Ошибка открытия файла\n");
     return 0;
 }
