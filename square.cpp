@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <time.h>
 #include <locale.h>
 #include <math.h>
@@ -25,19 +24,20 @@ int main(int argc, char* argv[])
     #ifdef DEBUG
     flog = fopen("log.txt", "a");
     #endif
+    //int check = getopt(argc, argv, "012");
     while (true)
     {
         printf("Enter 0, to finish program, 1, to solve equation, 2, to start tests: ");
 
         int check = menu(flog);
-        if (check == 0)
+        if (check == FINISH)
         {
             #ifdef DEBUG
             write_log(flog, LOG_INFO, PR_VAR(check, d));
             #endif
             break;
         }
-        else if (check == 1)
+        else if (check == QUAD_SOLVER)
         {
             #ifdef DEBUG
             write_log(flog, LOG_INFO, PR_VAR(check, d));
