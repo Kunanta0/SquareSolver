@@ -6,12 +6,12 @@
 #define YELLOW "\033[33m"
 #define RESET "\033[0m"
 #define BLUE "\033[34m"
+#include "maths.h"
 
 #define THINKING "Thinking..."
 
 const int ms_time = 2000;
 
-#include "maths.h"
 
 void printans(struct ans, FILE*);
 int menu(FILE* );
