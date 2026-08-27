@@ -1,8 +1,6 @@
 #ifndef MATHS_H_INCLUDED
 #define MATHS_H_INCLUDED
 
-#define ZERO 0
-
 enum Equation_id
 {
     QUAD_0_ROOTS,
@@ -18,21 +16,20 @@ const double epsilon = 1e-7;
 //структура ответа
 struct ans
 {
-    int id = ZERO;
-    double x1 = ZERO;
-    double x2 = ZERO;
+    int id;
+    double x1;
+    double x2;
 };
 
 //структура коэффициентов
 struct coeffs
 {
-    double a = ZERO;
-    double b = ZERO;
-    double c = ZERO;
+    double a;
+    double b;
+    double c;
 };
 
 //прототипы функций
-int get_id(struct coeffs, double);
 struct ans answer(struct coeffs, int);
 double Discriminant(struct coeffs);
 bool issame(double, double);
@@ -54,54 +51,38 @@ bool issame(double a, double b)
 struct ans answer(struct coeffs EQ)
 {
     double D = Discriminant(EQ);
-    int id = get_id(EQ, D);
-    struct ans correct =
-    {
-        id,
-        ZERO,
-        ZERO
-    };
-    switch (id)
-    {
-        case QUAD_1_ROOTS:
-            correct.x1 = -EQ.b / 2 / EQ.a;
-            break;
-        case QUAD_2_ROOTS:
-            correct.x1 = (-EQ.b + sqrt(D)) / 2 / EQ.a;
-            correct.x2 = (-EQ.b - sqrt(D)) / 2 / EQ.a;
-            break;
-        case LINE:
-            correct.x1 = -EQ.c / EQ.b;
-            break;
-        default:
-            break;
-    }
-    return correct;
-}
+    struct ans ans_prog = {};
 
-//возвращает то, какой случай реализуется
-int get_id(struct coeffs EQ, double D) //enum
-{
-    int id = 0;
     if(!(issame(EQ.a, 0)))
     {
-        if (D < 0) id = QUAD_0_ROOTS;
-        else if (issame(D, 0)) id = QUAD_1_ROOTS;
-        else id = QUAD_2_ROOTS;
+        if (D < 0) ans_prog.id = QUAD_0_ROOTS;
+        else if (issame(D, 0))
+        {
+            ans_prog.id = QUAD_1_ROOTS;
+            ans_prog.x1 = -EQ.b / 2 / EQ.a;
+        }
+        else
+        {
+            ans_prog.id = QUAD_2_ROOTS;
+            ans_prog.x1 = (-EQ.b + sqrt(D)) / 2 / EQ.a;
+            ans_prog.x2 = (-EQ.b - sqrt(D)) / 2 / EQ.a;
+        }
     }
     else
     {
         if (issame(EQ.b, 0))
         {
-            if (issame(EQ.c, 0)) id = ZERO_EQUALS_ZERO;
-            else id = ZERO_EQUALS_NO_ZERO;
+            if (issame(EQ.c, 0)) ans_prog.id = ZERO_EQUALS_ZERO;
+            else ans_prog.id = ZERO_EQUALS_NO_ZERO;
         }
         else
         {
-            id = LINE;
+            ans_prog.id = LINE;
+            ans_prog.x1 = -EQ.c / EQ.b;
         }
     }
-    return id;
+
+    return ans_prog;
 }
 
 //инициализирует структуру
