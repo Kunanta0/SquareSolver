@@ -7,9 +7,9 @@ FILE* test_init(char*, int*);
 //функция тестировщика
 void test(char* argv, FILE* flog)
 {
-    FILE* fp = NULL;
+    FILE* test_file = NULL;
     int num_strs = 1;
-    fp = test_init(argv, &num_strs);
+    test_file = test_init(argv, &num_strs);
 
     struct coeffs* cf = (struct coeffs*)calloc(num_strs, sizeof(struct coeffs));
     struct ans* answers = (struct ans*)calloc(num_strs, sizeof(struct ans));
@@ -24,7 +24,7 @@ void test(char* argv, FILE* flog)
         MyAssert(0 <= i && i < num_strs);
         struct ans ans_ref = answers[i];
         struct coeffs coefficients = cf[i];
-        fscanf(fp, "%lg %lg %lg %d %lg %lg",&coefficients.a, &coefficients.b, &coefficients.c, &ans_ref.id, &ans_ref.x1, &ans_ref.x2);
+        fscanf(test_file, "%lg %lg %lg %d %lg %lg",&coefficients.a, &coefficients.b, &coefficients.c, &ans_ref.id, &ans_ref.x1, &ans_ref.x2);
         struct ans ans_prog = answer(coefficients); //fixme
         if (ans_ref.id == ans_prog.id && (issame(ans_ref.x1, ans_prog.x1) && issame(ans_ref.x2, ans_prog.x2)) || (issame(ans_ref.x1, ans_prog.x2) && issame(ans_ref.x2, ans_prog.x1)))
         {
@@ -43,22 +43,22 @@ void test(char* argv, FILE* flog)
     }
     free(cf);
     free(answers);
-    if (fclose(fp) != 0) printf("Ошибка закрытия файла\n");
+    if (fclose(test_file) != 0) printf("Ошибка закрытия файла\n");
     printf("\n");
 }
 
 //возвращает файл теста, подсчитывает количество строк в тестах,
 FILE* test_init(char* argv, int* strs)
 {
-    FILE* fp = NULL;
+    FILE* file_test = NULL;
     char ch = '0';
-    if ((fp = fopen(argv, "r")) == NULL) printf("Ошибка открытия файла\n");
-    while ((ch = getc(fp)) != EOF)
+    if ((file_test = fopen(argv, "r")) == NULL) printf("Ошибка открытия файла\n");
+    while ((ch = getc(file_test)) != EOF)
     {
         if (ch == '\n') (*strs)++;
     }
-    rewind(fp);
-    return fp;
+    rewind(file_test);
+    return file_test;
 }
 
 #endif // TESTIK_H_INCLUDED
