@@ -7,12 +7,11 @@
 #define RESET "\033[0m"
 #define BLUE "\033[34m"
 
-#define THINKING "Думаю..."
+#define THINKING "Thinking..."
 
 const int ms_time = 2000;
 
 #include "maths.h"
-
 
 void printans(struct ans, FILE*);
 int menu(FILE* );
@@ -30,20 +29,20 @@ void printans(struct ans otvet, FILE* fp)
     switch (otvet.id)
     {
     case QUAD_0_ROOTS:
-        printf(YELLOW "Квадратное уравнение не имеет действительных корней, так как дискриминант меньше нуля\n\n" RESET);
+        printf(YELLOW "Quadratic equation doesn't have real roots, because discriminant is less than zero\n\n" RESET);
         #ifdef DEBUG
         write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
         #endif
         break;
     case QUAD_1_ROOTS:
-        printf(YELLOW "1 решение, так как дискриминант равен нулю: %lg\n\n" RESET, otvet.x1);
+        printf(YELLOW "1 root, because discriminant is zero: %lg\n\n" RESET, otvet.x1);
         #ifdef DEBUG
         write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
         write_log(fp, LOG_INFO, PR_VAR(otvet.x1, lg));
         #endif
         break;
     case QUAD_2_ROOTS:
-        printf(YELLOW "2 решения, так как дискриминант больше нуля: %lg и %lg\n\n" RESET, otvet.x1, otvet.x2);
+        printf(YELLOW "2 roots, because discriminant is bigger than zero: %lg and %lg\n\n" RESET, otvet.x1, otvet.x2);
         #ifdef DEBUG
         write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
         write_log(fp, LOG_INFO, PR_VAR(otvet.x1, lg));
@@ -51,20 +50,20 @@ void printans(struct ans otvet, FILE* fp)
         #endif
         break;
     case LINE:
-        printf(YELLOW "Линейное уравнение, так как коэффициент a = 0, корень: %lg\n\n" RESET, otvet.x1);
+        printf(YELLOW "Linear equation, because coefficient a = 0, root: %lg\n\n" RESET, otvet.x1);
         #ifdef DEBUG
         write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
         write_log(fp, LOG_INFO, PR_VAR(otvet.x1, lg));
         #endif
         break;
     case ZERO_EQUALS_ZERO:
-        printf(YELLOW "Бесконечное количество корней, так как все коэффициенты равны нулю (0 = 0)\n\n" RESET);
+        printf(YELLOW "Infinity number if roots, because all the coefficients are zeros (0 = 0)\n\n" RESET);
         #ifdef DEBUG
         write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
         #endif
         break;
     case ZERO_EQUALS_NO_ZERO:
-        printf(YELLOW "Корней нет, противоречие, так как все коэффициенты кроме c равны нулю, (c != 0)\n\n" RESET);
+        printf(YELLOW "No roots, condratiction, because all the coefficients except c are zero, (c != 0)\n\n" RESET);
         #ifdef DEBUG
         write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
         #endif
@@ -73,30 +72,20 @@ void printans(struct ans otvet, FILE* fp)
 }
 
 //меню, которое запрашивает у пользователя запуск программы снова
-int menu(FILE* fp)
+int menu(FILE* flog)
 {
-    char ch = '\0';
-    int n = 0;
-    do
+    double number = 0;
+    while (true)
     {
-        int coeff_entered = scanf("%d", &n);
-        if (coeff_entered != 1 || (ch = getchar()) != '\n' || (n != 0 && n != 1 && n != 2))
+        number = check_input(flog);
+        if (!(issame(number, 0)) && !(issame(number, 1)) && !(issame(number, 2)))
         {
-            printf("\"");
-            if (coeff_entered == 1) printf("%d", n);
-            putchar(ch);
-            while ((ch = getchar()) != '\n') putchar(ch);
-            printf("\" - неправильный ввод, введите 0, либо 1, либо 2: ");
-            #ifdef DEBUG
-            write_log(fp, LOG_INFO, "wrong users's input\n");
-            #endif // DEBUG
+            printf("Error: you entered wrong number: %lg. Enter 0, or 1, or 2: ", number);
+            continue;
         }
         else break;
-    } while(true);
-    #ifdef DEBUG
-    write_log(fp, LOG_INFO, "in menu user entered "PR_VAR(n, d));
-    #endif
-    return n;
+    }
+    return int(number);
 }
 
 #endif // OUTPUT_H_INCLUDED
