@@ -5,11 +5,11 @@ void test(char* argv, FILE*);
 int test_init(char*, FILE**);
 
 //функция тестировщика
-void test(char* argv, FILE* flog)
+void test(char* argv_i, FILE* flog)
 {
     FILE* test_file = NULL;
     int num_strs = 1;
-    num_strs = test_init(argv, &test_file);
+    num_strs = test_init(argv_i, &test_file);
 
     struct coeffs* cf = (struct coeffs*)calloc(num_strs, sizeof(struct coeffs));
     struct ans* answers = (struct ans*)calloc(num_strs, sizeof(struct ans));
@@ -48,11 +48,11 @@ void test(char* argv, FILE* flog)
 }
 
 //возвращает файл теста, подсчитывает количество строк в тестах,
-int test_init(char* argv, FILE** file_test)
+int test_init(char* argv_i, FILE** file_test)
 {
     int strs = 1;
     char ch = '0';
-    if ((*file_test = fopen(argv, "r")) == NULL) printf("Error of closing file\n");
+    if ((*file_test = fopen(argv_i, "r")) == NULL) printf("Error of closing file\n");
     while ((ch = getc(*file_test)) != EOF)
     {
         if (ch == '\n') ++strs;
