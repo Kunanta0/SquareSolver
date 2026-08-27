@@ -11,6 +11,13 @@ enum Equation_id
     ZERO_EQUALS_NO_ZERO
 };
 
+enum Choice_Menu
+{
+    FINISH,
+    QUAD_SOLVER,
+    TESTS
+};
+
 const double epsilon = 1e-7;
 
 //структура ответа
@@ -33,7 +40,8 @@ struct coeffs
 struct ans answer(struct coeffs, int);
 double Discriminant(struct coeffs);
 bool issame(double, double);
-struct coeffs init_eq(FILE* );
+struct coeffs init_eq(FILE*);
+void linear_solver(struct coeffs EQ, struct ans* ans_prog);
 
 //считает дискриминант
 double Discriminant(struct coeffs EQ)
@@ -41,7 +49,7 @@ double Discriminant(struct coeffs EQ)
     return EQ.b * EQ.b - 4 * EQ.a * EQ.c;
 }
 
-//обрабатывает погрешность одинакового ввода
+//обрабатывает погрешность одинакового ввода дробных чисел
 bool issame(double a, double b)
 {
     return (abs(a - b) < epsilon);
@@ -68,19 +76,7 @@ struct ans answer(struct coeffs EQ)
             ans_prog.x2 = (-EQ.b - sqrt(D)) / 2 / EQ.a;
         }
     }
-    else
-    {
-        if (issame(EQ.b, 0))
-        {
-            if (issame(EQ.c, 0)) ans_prog.id = ZERO_EQUALS_ZERO;
-            else ans_prog.id = ZERO_EQUALS_NO_ZERO;
-        }
-        else
-        {
-            ans_prog.id = LINE;
-            ans_prog.x1 = -EQ.c / EQ.b;
-        }
-    }
+    else linear_solver(EQ, &ans_prog);
 
     return ans_prog;
 }
@@ -95,6 +91,21 @@ struct coeffs init_eq(FILE* fp)
         asknum('c', fp),
     };
     return EQ;
+}
+
+//решает линейное уравнение
+void linear_solver(struct coeffs EQ, struct ans* ans_prog)
+{
+    if (issame(EQ.b, 0))
+    {
+        if (issame(EQ.c, 0)) (*ans_prog).id = ZERO_EQUALS_ZERO;
+        else (*ans_prog).id = ZERO_EQUALS_NO_ZERO;
+    }
+    else
+    {
+        (*ans_prog).id = LINE;
+        (*ans_prog).x1 = -EQ.c / EQ.b;
+    }
 }
 
 #endif // MATHS_H_INCLUDED
