@@ -28,14 +28,14 @@ void test(char* argv, FILE* flog)
         struct ans ans_prog = answer(coefficients); //fixme
         if (ans_ref.id == ans_prog.id && (issame(ans_ref.x1, ans_prog.x1) && issame(ans_ref.x2, ans_prog.x2)) || (issame(ans_ref.x1, ans_prog.x2) && issame(ans_ref.x2, ans_prog.x1)))
         {
-            printf(GREEN "Тест %d пройден\n" RESET, i + 1);
+            printf(GREEN "Test %d succeed\n" RESET, i + 1);
             #ifdef DEBUG
             write_log(flog, LOG_INFO, "Test %d succeed\n", i + 1);
             #endif
         }
         else
         {
-            printf(RED "Тест %d не пройден\n" RESET, i + 1);
+            printf(RED "Test %d unsucceed\n" RESET, i + 1);
             #ifdef DEBUG
             write_log(flog, LOG_WARNING, "Test %d unsucceed\n", i + 1);
             #endif
@@ -43,16 +43,16 @@ void test(char* argv, FILE* flog)
     }
     free(cf);
     free(answers);
-    if (fclose(test_file) != 0) printf("Ошибка закрытия файла\n");
+    if (fclose(test_file) != 0) printf("Error of closing file\n");
     printf("\n");
 }
 
-//возвращает количество строк в тестах, принимает файл по указателю
+//возвращает файл теста, подсчитывает количество строк в тестах,
 int test_init(char* argv, FILE** file_test)
 {
     int strs = 1;
     char ch = '0';
-    if ((*file_test = fopen(argv, "r")) == NULL) printf("Ошибка открытия файла\n");
+    if ((*file_test = fopen(argv, "r")) == NULL) printf("Error of closing file\n");
     while ((ch = getc(*file_test)) != EOF)
     {
         if (ch == '\n') ++strs;
