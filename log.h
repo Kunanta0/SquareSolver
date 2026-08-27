@@ -1,7 +1,7 @@
 #ifndef LOG_H_INCLUDED
 #define LOG_H_INCLUDED
 
-enum
+enum LogLevel
 {
     LOG_INFO,
     LOG_WARNING,
@@ -13,6 +13,7 @@ enum
     time_t now = time(NULL);\
     char* time_str = ctime(&now);\
     time_str[strcspn(time_str, "\n")] = 0;\
+    \
     fprintf(file, "%s ", time_str);\
     fprintf(file, #level": " __VA_ARGS__);\
 }
