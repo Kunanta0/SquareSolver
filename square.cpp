@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <time.h>
 #include <locale.h>
 #include <math.h>
@@ -20,50 +21,48 @@
 
 int main(int argc, char* argv[])
 {
-    setlocale(LC_ALL, "Russian");
-
-    FILE* fp = NULL;
+    FILE* flog = NULL;
     #ifdef DEBUG
-    fp = fopen("log.txt", "a");
+    flog = fopen("log.txt", "a");
     #endif
     while (true)
     {
-        printf("Введите 0, чтобы завершить программу, 1, чтобы решать уравнение, 2, чтобы запустить тесты: ");
+        printf("Enter 0, to finish program, 1, to solve equation, 2, to start tests: ");
 
-        int check = menu(fp);
+        int check = menu(flog);
         if (check == 0)
         {
             #ifdef DEBUG
-            write_log(fp, LOG_INFO, PR_VAR(check, d));
+            write_log(flog, LOG_INFO, PR_VAR(check, d));
             #endif
             break;
         }
         else if (check == 1)
         {
             #ifdef DEBUG
-            write_log(fp, LOG_INFO, PR_VAR(check, d));
+            write_log(flog, LOG_INFO, PR_VAR(check, d));
             #endif
-            printf(YELLOW "Квадратное уравнение имеет вид ax^2 + bx + c = 0\n" RESET);
+            printf(YELLOW "Quadratic equation looks like ax^2 + bx + c = 0\n" RESET);
 
-            struct coeffs EQ = init_eq(fp);
+            struct coeffs EQ = init_eq(flog);
             struct ans ans_prog = answer(EQ);
 
             #ifdef DEBUG
-            write_log(fp, LOG_INFO, PR_VAR(ans_prog.id, d));
+            write_log(flog, LOG_INFO, PR_VAR(ans_prog.id, d));
             #endif
-            printans(ans_prog, fp);
+            printans(ans_prog, flog);
         }
         else
         {
             #ifdef DEBUG
-            write_log(fp, LOG_INFO, PR_VAR(check, d));
+            write_log(flog, LOG_INFO, PR_VAR(check, d));
             #endif
-            test(argv[1], fp);
+            test(argv[1], flog);
         }
     }
-    printf(YELLOW "Пока!" RESET);
+    printf(YELLOW "Bye!" RESET);
     #ifdef DEBUG
-    if (fclose(fp) != 0) printf("Ошибка открытия файла\n");
+    if (fclose(flog) != 0) printf("Error of closing file\n");
     #endif
     return 0;
 }
