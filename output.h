@@ -63,7 +63,7 @@ void printans(struct ans otvet, FILE* fp)
         #endif
         break;
     case ZERO_EQUALS_NO_ZERO:
-        printf(YELLOW "No roots, condratiction, because all the coefficients except c are zero, (c != 0)\n\n" RESET);
+        printf(YELLOW "No roots, contradiction, because all the coefficients except c are zero, (c != 0)\n\n" RESET);
         #ifdef DEBUG
         write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
         #endif
