@@ -21,6 +21,7 @@
 int main(int argc, char* argv[])
 {
     setlocale(LC_ALL, "Russian");
+
     FILE* fp = NULL;
     #ifdef DEBUG
     fp = fopen("log.txt", "a");
@@ -28,6 +29,7 @@ int main(int argc, char* argv[])
     while (true)
     {
         printf("Введите 0, чтобы завершить программу, 1, чтобы решать уравнение, 2, чтобы запустить тесты: ");
+
         int check = menu(fp);
         if (check == 0)
         {
@@ -65,4 +67,3 @@ int main(int argc, char* argv[])
     #endif
     return 0;
 }
-//getopt_long --test
