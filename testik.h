@@ -25,7 +25,7 @@ void test(char* argv, FILE* flog)
         struct ans ans_ref = answers[i];
         struct coeffs coefficients = cf[i];
         fscanf(test_file, "%lg %lg %lg %d %lg %lg",&coefficients.a, &coefficients.b, &coefficients.c, &ans_ref.id, &ans_ref.x1, &ans_ref.x2);
-        struct ans ans_prog = answer(coefficients); //fixme
+        struct ans ans_prog = answer(coefficients);
         if (ans_ref.id == ans_prog.id && (issame(ans_ref.x1, ans_prog.x1) && issame(ans_ref.x2, ans_prog.x2)) || (issame(ans_ref.x1, ans_prog.x2) && issame(ans_ref.x2, ans_prog.x1)))
         {
             printf(GREEN "Test %d succeed\n" RESET, i + 1);
