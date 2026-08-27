@@ -2,14 +2,14 @@
 #define TESTIK_H_INCLUDED
 
 void test(char* argv, FILE*);
-FILE* test_init(char*, int*);
+int test_init(char*, FILE**);
 
 //функция тестировщика
 void test(char* argv, FILE* flog)
 {
     FILE* test_file = NULL;
     int num_strs = 1;
-    test_file = test_init(argv, &num_strs);
+    num_strs = test_init(argv, &test_file);
 
     struct coeffs* cf = (struct coeffs*)calloc(num_strs, sizeof(struct coeffs));
     struct ans* answers = (struct ans*)calloc(num_strs, sizeof(struct ans));
@@ -47,18 +47,18 @@ void test(char* argv, FILE* flog)
     printf("\n");
 }
 
-//возвращает файл теста, подсчитывает количество строк в тестах,
-FILE* test_init(char* argv, int* strs)
+//возвращает количество строк в тестах, принимает файл по указателю
+int test_init(char* argv, FILE** file_test)
 {
-    FILE* file_test = NULL;
+    int strs = 1;
     char ch = '0';
-    if ((file_test = fopen(argv, "r")) == NULL) printf("Ошибка открытия файла\n");
-    while ((ch = getc(file_test)) != EOF)
+    if ((*file_test = fopen(argv, "r")) == NULL) printf("Ошибка открытия файла\n");
+    while ((ch = getc(*file_test)) != EOF)
     {
-        if (ch == '\n') (*strs)++;
+        if (ch == '\n') ++strs;
     }
-    rewind(file_test);
-    return file_test;
+    rewind(*file_test);
+    return strs;
 }
 
 #endif // TESTIK_H_INCLUDED
