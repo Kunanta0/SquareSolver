@@ -1,10 +1,10 @@
 #ifndef TESTIK_H_INCLUDED
 #define TESTIK_H_INCLUDED
 
-void test(char* argv, FILE*);
-int test_init(char*, FILE**);
+void test(char*, FILE*);///<this function runs tests
+int test_init(char*, FILE**);///<this function initialize test file, returns number of its lines
 
-//функция тестировщика
+//function for tests
 void test(char* argv_i, FILE* flog)
 {
     FILE* test_file = NULL;
@@ -47,7 +47,7 @@ void test(char* argv_i, FILE* flog)
     printf("\n");
 }
 
-//возвращает файл теста, подсчитывает количество строк в тестах,
+//returns number of lines in test, accepts pointer to file, which fills
 int test_init(char* argv_i, FILE** file_test)
 {
     int strs = 1;
