@@ -1,3 +1,8 @@
+/**
+*\file
+*\brief Header with output functions
+*/
+
 #ifndef OUTPUT_H_INCLUDED
 #define OUTPUT_H_INCLUDED
 
@@ -10,12 +15,16 @@
 
 #define THINKING "Thinking..."
 
-const int ms_time = 2000;
+const int ms_time = 2000;///<time of thinking
 
-void printans(struct ans, FILE*);///<this function prints answer from the structure, accepts log file to write information there
+/**
+*this function prints answer from the structure, accepts log file to write information there
+*\param[in,out] ans_prog prints answer, using structure
+*/
+void printans(struct ans, FILE*);
 
 //print answer
-void printans(struct ans otvet, FILE* fp)
+void printans(struct ans ans_prog, FILE* fp)
 {
     printf(THINKING);
 
@@ -24,46 +33,46 @@ void printans(struct ans otvet, FILE* fp)
     {
         printf("\b");
     }
-    switch (otvet.id)
+    switch (ans_prog.id)
     {
     case QUAD_0_ROOTS:
         printf(YELLOW "Quadratic equation doesn't have real roots, because discriminant is less than zero\n\n" RESET);
         #ifdef DEBUG
-        write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
+        write_log(fp, LOG_INFO, PR_VAR(ans_prog.id, d));
         #endif
         break;
     case QUAD_1_ROOTS:
-        printf(YELLOW "1 root, because discriminant is zero: %lg\n\n" RESET, otvet.x1);
+        printf(YELLOW "1 root, because discriminant is zero: %lg\n\n" RESET, ans_prog.x1);
         #ifdef DEBUG
-        write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
-        write_log(fp, LOG_INFO, PR_VAR(otvet.x1, lg));
+        write_log(fp, LOG_INFO, PR_VAR(ans_prog.id, d));
+        write_log(fp, LOG_INFO, PR_VAR(ans_prog.x1, lg));
         #endif
         break;
     case QUAD_2_ROOTS:
-        printf(YELLOW "2 roots, because discriminant is bigger than zero: %lg and %lg\n\n" RESET, otvet.x1, otvet.x2);
+        printf(YELLOW "2 roots, because discriminant is bigger than zero: %lg and %lg\n\n" RESET, ans_prog.x1, ans_prog.x2);
         #ifdef DEBUG
-        write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
-        write_log(fp, LOG_INFO, PR_VAR(otvet.x1, lg));
-        write_log(fp, LOG_INFO, PR_VAR(otvet.x2, lg));
+        write_log(fp, LOG_INFO, PR_VAR(ans_prog.id, d));
+        write_log(fp, LOG_INFO, PR_VAR(ans_prog.x1, lg));
+        write_log(fp, LOG_INFO, PR_VAR(ans_prog.x2, lg));
         #endif
         break;
     case LINE:
-        printf(YELLOW "Linear equation, because coefficient a = 0, root: %lg\n\n" RESET, otvet.x1);
+        printf(YELLOW "Linear equation, because coefficient a = 0, root: %lg\n\n" RESET, ans_prog.x1);
         #ifdef DEBUG
-        write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
-        write_log(fp, LOG_INFO, PR_VAR(otvet.x1, lg));
+        write_log(fp, LOG_INFO, PR_VAR(ans_prog.id, d));
+        write_log(fp, LOG_INFO, PR_VAR(ans_prog.x1, lg));
         #endif
         break;
     case ZERO_EQUALS_ZERO:
         printf(YELLOW "Infinity number if roots, because all the coefficients are zeros (0 = 0)\n\n" RESET);
         #ifdef DEBUG
-        write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
+        write_log(fp, LOG_INFO, PR_VAR(ans_prog.id, d));
         #endif
         break;
     case ZERO_EQUALS_NO_ZERO:
         printf(YELLOW "No roots, contradiction, because all the coefficients except c are zero, (c != 0)\n\n" RESET);
         #ifdef DEBUG
-        write_log(fp, LOG_INFO, PR_VAR(otvet.id, d));
+        write_log(fp, LOG_INFO, PR_VAR(ans_prog.id, d));
         #endif
         break;
     }
