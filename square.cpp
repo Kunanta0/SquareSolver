@@ -35,8 +35,7 @@ int main(int argc, char* argv[])///<main function, accepts command line's argume
                                      {0,       0,                 0,    0  } };
 
     int opt = 0;
-    int options_index = 0;
-    if ((opt = getopt_long(argc, argv, "s:t:", long_options, &options_index)) != -1)
+    if ((opt = getopt_long(argc, argv, "s:t:", long_options, NULL)) != -1)
     {
         switch(opt)
         {
