@@ -4,60 +4,59 @@
 #include <locale.h>
 #include <math.h>
 #include <windows.h>
+#include <getopt.h>
 #include "log.h"
 #include "input.h"
 #include "output.h"
 #include "myassert.h"
 #include "testik.h"
 
-//0 - нет решения квадратного уравнения
-//1 - 1 решение квадратного уравнения
-//2 - 2 решения квадратного уравнения
-//3 - 1 решение, линейное уравнение
-//4 - бесконечное количество решений
-//5 - нет решений, противоречие
+//0 - no roots of quadratic equation
+//1 - 1 root of quadratic equation
+//2 - 2 roots of quadratic equation
+//3 - 1 root of linear equation
+//4 - infinity number of roots
+//5 - no roots, contradiction "zero equals no zero"
 
-
-int main(int argc, char* argv[])
+int main(int argc, char* argv[])///<main function, accepts command line's arguments
 {
     FILE* flog = NULL;
     #ifdef DEBUG
     flog = fopen("log.txt", "a");
     #endif
-    //int check = getopt(argc, argv, "012");
-    while (true)
+
+    /**
+    *structure of command line options, there are 2 options: --solve and --test,
+    *--solve starts program, which solves quadratic equation
+    *--test runs test, which are being got from its required argument, where user needs to write test file
+    */
+    struct option long_options[] = { {"solve", no_argument,       NULL, 's'},
+                                     {"test",  required_argument, NULL, 't'},
+                                     {0,       0,                 0,    0  } };
+
+    int opt = 0;
+    int options_index = 0;
+    if ((opt = getopt_long(argc, argv, "s:t:", long_options, &options_index)) != -1)
     {
-        printf("Enter 0, to finish program, 1, to solve equation, 2, to start tests: ");
-
-        int check = menu(flog);
-        if (check == FINISH)
+        switch(opt)
         {
-            #ifdef DEBUG
-            write_log(flog, LOG_INFO, PR_VAR(check, d));
-            #endif
-            break;
-        }
-        else if (check == QUAD_SOLVER)
-        {
-            #ifdef DEBUG
-            write_log(flog, LOG_INFO, PR_VAR(check, d));
-            #endif
-            printf(YELLOW "Quadratic equation looks like ax^2 + bx + c = 0\n" RESET);
+            case 's':
+                {
+                    printf(YELLOW "Quadratic equation looks like ax^2 + bx + c = 0\n" RESET);
 
-            struct coeffs EQ = init_eq(flog);
-            struct ans ans_prog = answer(EQ);
+                    struct coeffs EQ = init_eq(flog);
+                    struct ans ans_prog = answer(EQ);
 
-            #ifdef DEBUG
-            write_log(flog, LOG_INFO, PR_VAR(ans_prog.id, d));
-            #endif
-            printans(ans_prog, flog);
-        }
-        else
-        {
-            #ifdef DEBUG
-            write_log(flog, LOG_INFO, PR_VAR(check, d));
-            #endif
-            test(argv[1], flog);
+                    printans(ans_prog, flog);
+                    break;
+                }
+            case 't':
+                {
+                    test(argv[2], flog);
+                    break;
+                }
+            default:
+                exit(EXIT_FAILURE);
         }
     }
     printf(YELLOW "Bye!" RESET);
