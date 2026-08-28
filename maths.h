@@ -1,6 +1,7 @@
 #ifndef MATHS_H_INCLUDED
 #define MATHS_H_INCLUDED
 
+///this enum shows cases of quadratic equation
 enum Equation_id
 {
     QUAD_0_ROOTS,
@@ -11,16 +12,9 @@ enum Equation_id
     ZERO_EQUALS_NO_ZERO
 };
 
-enum Choice_Menu
-{
-    FINISH,
-    QUAD_SOLVER,
-    TESTS
-};
+const double epsilon = 1e-7;///<this constant uses to fix error of double numbers
 
-const double epsilon = 1e-7;
-
-//структура ответа
+//answer struct
 struct ans
 {
     int id;
@@ -28,7 +22,7 @@ struct ans
     double x2;
 };
 
-//структура коэффициентов
+//coefficient structure
 struct coeffs
 {
     double a;
@@ -36,26 +30,26 @@ struct coeffs
     double c;
 };
 
-//прототипы функций
-struct ans answer(struct coeffs, int);
-double Discriminant(struct coeffs);
-bool issame(double, double);
-struct coeffs init_eq(FILE*);
-void linear_solver(struct coeffs EQ, struct ans* ans_prog);
+//function prototypes
+struct ans answer(struct coeffs, int);///<this function returns structure with answer
+double Discriminant(struct coeffs);///<this function returns discriminant, accepts coefficients structure
+bool issame(double, double);///<this function processes error of comparison double numbers
+struct coeffs init_eq(FILE*);///<this function initialize coefficients structure
+void linear_solver(struct coeffs EQ, struct ans* ans_prog);///<solve linear equation, accepts coefficient structure and pointer to answer structure
 
-//считает дискриминант
+//counts discriminant
 double Discriminant(struct coeffs EQ)
 {
     return EQ.b * EQ.b - 4 * EQ.a * EQ.c;
 }
 
-//обрабатывает погрешность одинакового ввода дробных чисел
+//processing error of double numbers
 bool issame(double a, double b)
 {
     return (abs(a - b) < epsilon);
 }
 
-//функция, которая возвращает структуру, которая выдает ответ
+//function, which returns structure, which has the answer
 struct ans answer(struct coeffs EQ)
 {
     double D = Discriminant(EQ);
@@ -81,7 +75,7 @@ struct ans answer(struct coeffs EQ)
     return ans_prog;
 }
 
-//инициализирует структуру
+//initialize struct
 struct coeffs init_eq(FILE* fp)
 {
     struct coeffs EQ =
@@ -93,7 +87,7 @@ struct coeffs init_eq(FILE* fp)
     return EQ;
 }
 
-//решает линейное уравнение
+//solve linear equation
 void linear_solver(struct coeffs EQ, struct ans* ans_prog)
 {
     if (issame(EQ.b, 0))
