@@ -1,3 +1,8 @@
+/**
+*\file
+*\brief Header with log file
+*/
+
 #ifndef LOG_H_INCLUDED
 #define LOG_H_INCLUDED
 
