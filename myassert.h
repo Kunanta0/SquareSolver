@@ -1,8 +1,13 @@
+/**
+*\file
+*\brief Header with my assert
+*/
+
 #ifndef MYASSERT_H_INCLUDED
 #define MYASSERT_H_INCLUDED
 
-///this is realization of my assert
 //my assert()
+///this is realization of my assert
 #define MyAssert(exp)\
 if (!(exp))\
 {\
