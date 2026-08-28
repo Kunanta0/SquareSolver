@@ -1,20 +1,30 @@
+/**
+*\file
+*\brief Header with math functions
+*/
+
 #ifndef MATHS_H_INCLUDED
 #define MATHS_H_INCLUDED
 
 ///this enum shows cases of quadratic equation
 enum Equation_id
 {
-    QUAD_0_ROOTS,
-    QUAD_1_ROOTS,
-    QUAD_2_ROOTS,
-    LINE,
-    ZERO_EQUALS_ZERO,
-    ZERO_EQUALS_NO_ZERO
+    QUAD_0_ROOTS,///<quadratic equation has no roots
+    QUAD_1_ROOTS,///<quadratic equation has 1 root
+    QUAD_2_ROOTS,///<quadratic equation has 2 roots
+    LINE,///<linear equation (a = 0, b!= 0)
+    ZERO_EQUALS_ZERO,///<case a = 0, b = 0, c = 0,
+    ZERO_EQUALS_NO_ZERO///<case a = 0, b = 0, c !=  0
 };
 
 const double epsilon = 1e-7;///<this constant uses to fix error of double numbers
 
-//answer struct
+//answer structure
+/**
+*\brief structure of answer
+*
+*this structure contains parameters with roots and case
+*/
 struct ans
 {
     int id;
@@ -23,6 +33,11 @@ struct ans
 };
 
 //coefficient structure
+/**
+*\brief structure of coefficients
+*
+*this structure contains coefficients
+*/
 struct coeffs
 {
     double a;
@@ -31,11 +46,41 @@ struct coeffs
 };
 
 //function prototypes
-struct ans answer(struct coeffs, int);///<this function returns structure with answer
-double Discriminant(struct coeffs);///<this function returns discriminant, accepts coefficients structure
-bool issame(double, double);///<this function processes error of comparison double numbers
-struct coeffs init_eq(FILE*);///<this function initialize coefficients structure
-void linear_solver(struct coeffs EQ, struct ans* ans_prog);///<solve linear equation, accepts coefficient structure and pointer to answer structure
+
+/**
+*this function returns structure with answer
+*\param[in] EQ structure of coefficients
+*\return structure of answer
+*/
+struct ans answer(struct coeffs);
+
+/**
+*this function returns discriminant, accepts coefficients structure
+*\param[in] EQ structure of coefficients
+*\return discriminant
+*/
+double Discriminant(struct coeffs);
+
+/**
+*this function processes error of comparison double numbers
+*\param a,b comparing double numbers
+*\return numbers are same or not
+*/
+bool issame(double, double);
+
+/**
+*this function initialize coefficients structure
+*\param[out] flog log file
+*\return structure of coefficients
+*/
+struct coeffs init_eq(FILE*);
+
+/**
+*solve linear equation, accepts coefficient structure and pointer to answer structure
+*\param[in] EQ structure of coefficients
+*\param[out] ans_prog structure of answer
+*/
+void linear_solver(struct coeffs, struct ans*);
 
 //counts discriminant
 double Discriminant(struct coeffs EQ)
@@ -76,13 +121,13 @@ struct ans answer(struct coeffs EQ)
 }
 
 //initialize struct
-struct coeffs init_eq(FILE* fp)
+struct coeffs init_eq(FILE* flog)
 {
     struct coeffs EQ =
     {
-        asknum('a', fp),
-        asknum('b', fp),
-        asknum('c', fp),
+        asknum('a', flog),
+        asknum('b', flog),
+        asknum('c', flog),
     };
     return EQ;
 }
