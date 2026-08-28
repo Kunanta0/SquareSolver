@@ -1,8 +1,25 @@
+/**
+*\file
+*\brief Header with test function
+*/
+
 #ifndef TESTIK_H_INCLUDED
 #define TESTIK_H_INCLUDED
 
-void test(char*, FILE*);///<this function runs tests
-int test_init(char*, FILE**);///<this function initialize test file, returns number of its lines
+/**
+*this function runs tests
+*\param[in] argv_i name of test file
+*\param[out] flog log file
+*/
+void test(char*, FILE*);
+
+/**
+*this function initialize test file, returns number of its lines
+*\param[in] argv_i name of test file
+*\param[in,out] file_test test file
+*\return number of lines
+*/
+int test_init(char*, FILE**);
 
 //function for tests
 void test(char* argv_i, FILE* flog)
