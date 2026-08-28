@@ -1,55 +1,48 @@
 #ifndef INPUT_H_INCLUDED
 #define INPUT_H_INCLUDED
 
-const unsigned int MAX_SIZE = 1e5;
 double asknum(char, FILE*);
 double check_input(FILE* );
 
-//запрашивает коэффициенты квадратного уравнения
-double asknum(char coeff, FILE* fp)
+//asks coefficients of quadratic equation
+double asknum(char coeff, FILE* flog)///<function asknum() accepts char coefficient and ask it
 {
     printf("Enter coefficient %c: ", coeff);
 
-    return check_input(fp);
+    return check_input(flog);
 }
 
-//проверяет корректность ввода
+///function check_input() accepts log file to write there user's number, while he won't enter good input
+//check input
 double check_input(FILE* flog)
 {
-    char input[MAX_SIZE] = {};
-    char* endptr = NULL;
-    double number = 0;
-
     while(true)
     {
-        if (fgets(input, sizeof(input), stdin) == NULL)
+        double number = 0;
+        char ch = '0';
+        int return_scanf = scanf("%lg", &number);
+        if (return_scanf != 1 || (ch = getchar()) != '\n')
         {
-            printf("Input error\n");
-            #ifdef DEBUG
-            write_log(flog, LOG_INFO, "wrong users's input\n");
-            #endif // DEBUG
-            continue;
+            if (return_scanf == 1)
+            {
+                printf("\"%lg", number);
+                putchar(ch);
+                while((ch = getchar()) != '\n') putchar(ch);
+                printf("\" - wrong input, enter a number: ");
+                continue;
+            }
+            else
+            {
+                printf("\"");
+                while((ch = getchar()) != '\n') putchar(ch);
+                printf("\" - wrong input, enter a number: ");
+                continue;
+            }
         }
+        #ifdef DEBUG
+        write_log(flog, LOG_INFO, PR_VAR(number, d));
+        #endif
 
-        input[strcspn(input, "\n")] = 0;
-        if (strlen(input) == 0)
-        {
-            printf("Error: empty input, enter a number: ");
-            #ifdef DEBUG
-            write_log(flog, LOG_INFO, "wrong users's input\n");
-            #endif // DEBUG
-            continue;
-        }
-
-        number = strtod(input, &endptr);
-        if (*endptr != '\0')
-        {
-            printf("Error: \"%s\" is not a number. Enter a number: ", input);
-            #ifdef DEBUG
-            write_log(flog, LOG_INFO, "wrong users's input\n");
-            #endif // DEBUG
-            continue;
-        }
         return number;
     }
 }
