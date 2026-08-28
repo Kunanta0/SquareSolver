@@ -1,3 +1,8 @@
+/**
+*\file
+*\brief file with main function
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -25,11 +30,6 @@ int main(int argc, char* argv[])///<main function, accepts command line's argume
     flog = fopen("log.txt", "a");
     #endif
 
-    /**
-    *structure of command line options, there are 2 options: --solve and --test,
-    *--solve starts program, which solves quadratic equation
-    *--test runs test, which are being got from its required argument, where user needs to write test file
-    */
     struct option long_options[] = { {"solve", no_argument,       NULL, 's'},
                                      {"test",  required_argument, NULL, 't'},
                                      {0,       0,                 0,    0  } };
