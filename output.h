@@ -24,7 +24,7 @@ const int ms_time = 2000;///<time of thinking
 void printans(struct ans, FILE*);
 
 //print answer
-void printans(struct ans ans_prog, FILE* fp)
+void printans(struct ans ans_prog, FILE* flog)
 {
     printf(THINKING);
 
@@ -38,29 +38,29 @@ void printans(struct ans ans_prog, FILE* fp)
     case QUAD_0_ROOTS:
         printf(YELLOW "Quadratic equation doesn't have real roots, because discriminant is less than zero\n\n" RESET);
         #ifdef DEBUG
-        write_log(fp, LOG_INFO, PR_VAR(ans_prog.id, d));
+        write_log(flog, LOG_INFO, PR_VAR(ans_prog.id, d));
         #endif
         break;
     case QUAD_1_ROOTS:
         printf(YELLOW "1 root, because discriminant is zero: %lg\n\n" RESET, ans_prog.x1);
         #ifdef DEBUG
-        write_log(fp, LOG_INFO, PR_VAR(ans_prog.id, d));
-        write_log(fp, LOG_INFO, PR_VAR(ans_prog.x1, lg));
+        write_log(flog, LOG_INFO, PR_VAR(ans_prog.id, d));
+        write_log(flog, LOG_INFO, PR_VAR(ans_prog.x1, lg));
         #endif
         break;
     case QUAD_2_ROOTS:
-        printf(YELLOW "2 roots, because discriminant is bigger than zero: %lg and %lg\n\n" RESET, ans_prog.x1, ans_prog.x2);
+        printf(YELLOW "2 roots, because discriminant is more than zero: %lg and %lg\n\n" RESET, ans_prog.x1, ans_prog.x2);
         #ifdef DEBUG
-        write_log(fp, LOG_INFO, PR_VAR(ans_prog.id, d));
-        write_log(fp, LOG_INFO, PR_VAR(ans_prog.x1, lg));
-        write_log(fp, LOG_INFO, PR_VAR(ans_prog.x2, lg));
+        write_log(flog, LOG_INFO, PR_VAR(ans_prog.id, d));
+        write_log(flog, LOG_INFO, PR_VAR(ans_prog.x1, lg));
+        write_log(flog, LOG_INFO, PR_VAR(ans_prog.x2, lg));
         #endif
         break;
     case LINE:
         printf(YELLOW "Linear equation, because coefficient a = 0, root: %lg\n\n" RESET, ans_prog.x1);
         #ifdef DEBUG
-        write_log(fp, LOG_INFO, PR_VAR(ans_prog.id, d));
-        write_log(fp, LOG_INFO, PR_VAR(ans_prog.x1, lg));
+        write_log(flog, LOG_INFO, PR_VAR(ans_prog.id, d));
+        write_log(flog, LOG_INFO, PR_VAR(ans_prog.x1, lg));
         #endif
         break;
     case ZERO_EQUALS_ZERO:
@@ -72,7 +72,7 @@ void printans(struct ans ans_prog, FILE* fp)
     case ZERO_EQUALS_NO_ZERO:
         printf(YELLOW "No roots, contradiction, because all the coefficients except c are zero, (c != 0)\n\n" RESET);
         #ifdef DEBUG
-        write_log(fp, LOG_INFO, PR_VAR(ans_prog.id, d));
+        write_log(flog, LOG_INFO, PR_VAR(ans_prog.id, d));
         #endif
         break;
     }
