@@ -12,11 +12,9 @@
 
 const int ms_time = 2000;
 
+void printans(struct ans, FILE*);///<this function prints answer from the structure, accepts log file to write information there
 
-void printans(struct ans, FILE*);
-int menu(FILE* );
-
-//выводит ответ
+//print answer
 void printans(struct ans otvet, FILE* fp)
 {
     printf(THINKING);
@@ -69,23 +67,6 @@ void printans(struct ans otvet, FILE* fp)
         #endif
         break;
     }
-}
-
-//меню, которое запрашивает у пользователя запуск программы снова
-int menu(FILE* flog)
-{
-    double number = 0;
-    while (true)
-    {
-        number = check_input(flog);
-        if (!(issame(number, 0)) && !(issame(number, 1)) && !(issame(number, 2)))
-        {
-            printf("Error: you entered wrong number: %lg. Enter 0, or 1, or 2: ", number);
-            continue;
-        }
-        else break;
-    }
-    return int(number);
 }
 
 #endif // OUTPUT_H_INCLUDED
