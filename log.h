@@ -1,6 +1,7 @@
 #ifndef LOG_H_INCLUDED
 #define LOG_H_INCLUDED
 
+///this enum creates levels for log file
 enum LogLevel
 {
     LOG_INFO,
@@ -8,6 +9,7 @@ enum LogLevel
     LOG_ERROR
 };
 
+///this define accepts name of log file, level, and other arguments, for printing them in log file
 #define write_log(file, level, ...)\
 {\
     time_t now = time(NULL);\
@@ -17,6 +19,8 @@ enum LogLevel
     fprintf(file, "%s ", time_str);\
     fprintf(file, #level": " __VA_ARGS__);\
 }
+
+///this define transforms variable and specification to string for using it in printf
 #define PR_VAR(x, specif) #x " = %" #specif "\n", x
 
 #endif // LOG_H_INCLUDED
