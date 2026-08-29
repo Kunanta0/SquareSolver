@@ -137,13 +137,13 @@ void linear_solver(struct coeffs EQ, struct ans* ans_prog)
 {
     if (issame(EQ.b, 0))
     {
-        if (issame(EQ.c, 0)) (*ans_prog).id = ZERO_EQUALS_ZERO;
-        else (*ans_prog).id = ZERO_EQUALS_NO_ZERO;
+        if (issame(EQ.c, 0)) ans_prog->id = ZERO_EQUALS_ZERO;
+        else ans_prog->id = ZERO_EQUALS_NO_ZERO;
     }
     else
     {
-        (*ans_prog).id = LINE;
-        (*ans_prog).x1 = -EQ.c / EQ.b;
+        ans_prog->id = LINE;
+        ans_prog->x1 = -EQ.c / EQ.b;
     }
 }
 
