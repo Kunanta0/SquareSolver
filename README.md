@@ -12,7 +12,7 @@ Option "***--test***" has a required argument. This option runs tests from the f
 1. Clone repository: 
   enter in command line: git clone https://github.com/Kunanta0/SquareSolver.git
 2. Open **c++** compilator:
-  use path in command line to the folder with compilator
+  use **path** in command line to the folder with compilator
 
 ## Using
 
