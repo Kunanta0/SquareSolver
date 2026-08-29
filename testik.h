@@ -29,7 +29,6 @@ void test(char* filename, FILE* flog)
 
     for (unsigned int i = 0;i < num_strs; ++i)
     {
-        MyAssert(0 <= i && i < num_strs);
         struct ans ans_ref = {};
         struct coeffs coefficients = {};
         fscanf(test_file, "%lg %lg %lg %d %lg %lg", &coefficients.a, &coefficients.b, &coefficients.c, &ans_ref.id, &ans_ref.x1, &ans_ref.x2);
