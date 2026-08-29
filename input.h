@@ -37,6 +37,7 @@ double check_input(FILE* flog)
         double number = 0;
         char ch = '0';
         int return_scanf = scanf("%lg", &number);
+
         if (return_scanf != 1 || (ch = getchar()) != '\n')
         {
             printf("\"");
@@ -45,8 +46,14 @@ double check_input(FILE* flog)
             printf("\" is not a number input, enter a number: ");
             continue;
         }
+
+        if (isinf(number))
+        {
+            printf("Too big number, try again: ");
+            continue;
+        }
         #ifdef DEBUG
-        write_log(flog, LOG_INFO, PR_VAR(number, d));
+        write_log(flog, LOG_INFO, PR_VAR(number, lg));
         #endif
 
         return number;
